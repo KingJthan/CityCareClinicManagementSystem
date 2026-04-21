@@ -129,6 +129,22 @@ stripe listen --forward-to http://localhost/CityCareClinicManagementSystem/publi
 
 The command prints a `whsec_...` webhook signing secret. Put that value in `.env` as `STRIPE_WEBHOOK_SECRET`, then run `php artisan optimize:clear`.
 
+## Laravel Cloud Notes
+
+The application uses database-backed sessions, queues, and cache. Make sure Laravel Cloud runs migrations after each deployment:
+
+```bash
+php artisan migrate --force
+```
+
+For a classroom/demo deployment, seed the default role accounts once after the database is attached:
+
+```bash
+php artisan db:seed --force
+```
+
+If every role login returns a 500 error on Cloud, first check that migrations have created the `users`, `sessions`, and clinic tables, then confirm the demo accounts were seeded. The default demo password is `citycare456`.
+
 ## Important URLs
 
 - Public home: `/`
