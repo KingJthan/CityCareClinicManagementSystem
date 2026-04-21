@@ -6,12 +6,30 @@ CityCare is a Laravel 12 clinic management system built for the project-based ex
 
 This README is written to satisfy the project documentation requirement in the marking guide:
 
-- Setup steps are provided in the **Local Setup**, **Stripe Billing Setup**, and **Laravel Cloud Notes** sections.
-- Major features are explained in the **Main Features** section.
+- Setup steps are provided in the **Installation Steps**, **Stripe Billing Setup**, and **Laravel Cloud Notes** sections.
+- Major features are explained in the **Features** section.
 - Brief descriptions of the screens and system modules are provided in the **System Modules** and **Screen Descriptions** sections.
 - Demo accounts, important URLs, and verification commands are included for quick examiner testing.
 
-## Main Features
+## Technologies Used
+
+- PHP 8.2+
+- Laravel 12
+- Laravel Blade templating
+- Laravel Eloquent ORM
+- Laravel validation, middleware, migrations, seeders, and feature tests
+- Laravel Cashier
+- Stripe Checkout
+- MySQL for local XAMPP development
+- PostgreSQL or MySQL for Laravel Cloud deployment
+- Bootstrap 5
+- Custom CSS
+- JavaScript Fetch API for AJAX doctor availability
+- PHPUnit through `php artisan test`
+- Git and GitHub
+- Laravel Cloud
+
+## Features
 
 - Secure patient login, hidden staff login, patient self-registration, email verification after registration, and OTP verification on normal non-demo login.
 - Role-based access for Administrator, Receptionist, Doctor, Cashier, Pharmacist, Radiology, RN, PCT, House Keeping, Nurse, Dietary, and Patient.
@@ -66,17 +84,41 @@ These descriptions can be used in place of screenshots when submitting the proje
 - Reports screen: gives every role a report area, with report types filtered by role and CSV export available for the selected report.
 - Care shop and checkout screens: allow public visitors or patients to add services to a cart, submit mobile money or bank references for cashier verification, or proceed to Stripe-hosted card checkout.
 
-## Local Setup
+## Installation Steps
 
 1. Put the folder in `C:\xampp\htdocs\CityCareClinicManagementSystem`.
-2. Start Apache and MySQL in XAMPP.
-3. Create the database if it does not already exist:
+2. Open a terminal in the project folder:
+
+```bash
+cd C:\xampp\htdocs\CityCareClinicManagementSystem
+```
+
+3. Install PHP dependencies:
+
+```bash
+composer install
+```
+
+4. Create the environment file if it does not already exist:
+
+```bash
+copy .env.example .env
+```
+
+5. Generate the Laravel application key:
+
+```bash
+php artisan key:generate
+```
+
+6. Start Apache and MySQL in XAMPP.
+7. Create the database if it does not already exist:
 
 ```sql
 CREATE DATABASE citycare_clinic CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ```
 
-4. Confirm `.env` contains:
+8. Confirm `.env` contains:
 
 ```env
 APP_NAME="CityCare Clinic"
@@ -94,13 +136,19 @@ CASHIER_CURRENCY=ugx
 CASHIER_CURRENCY_LOCALE=en_UG
 ```
 
-5. Run migrations and seed sample data:
+9. Run migrations and seed sample data:
 
 ```bash
 php artisan migrate --seed
 ```
 
-6. Open the system:
+10. Clear cached configuration:
+
+```bash
+php artisan optimize:clear
+```
+
+11. Open the system:
 
 ```text
 http://localhost/CityCareClinicManagementSystem/public
@@ -205,3 +253,9 @@ The included test suite covers public pages, patient registration, role checking
 ```bash
 php artisan test
 ```
+
+## Author
+
+Jonathan Mugume  
+VU-BBC-2411-1587-DAY  
+2026
