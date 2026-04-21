@@ -2,6 +2,15 @@
 
 CityCare is a Laravel 12 clinic management system built for the project-based exam brief. It centralizes patient registration, email verification, OTP login, doctor scheduling, appointment booking, consultation notes, pharmacy, radiology, cashier payments, role-based access, search/filtering, pagination, and CSV reporting.
 
+## Documentation Checklist
+
+This README is written to satisfy the project documentation requirement in the marking guide:
+
+- Setup steps are provided in the **Local Setup**, **Stripe Billing Setup**, and **Laravel Cloud Notes** sections.
+- Major features are explained in the **Main Features** section.
+- Brief descriptions of the screens and system modules are provided in the **System Modules** and **Screen Descriptions** sections.
+- Demo accounts, important URLs, and verification commands are included for quick examiner testing.
+
 ## Main Features
 
 - Secure patient login, hidden staff login, patient self-registration, email verification after registration, and OTP verification on normal non-demo login.
@@ -37,6 +46,25 @@ CityCare is a Laravel 12 clinic management system built for the project-based ex
 - Nurse/RN/PCT workspace: can review patient information, provider, vitals, blood work, treatment history, and family history.
 - Reports module: produces appointment, payment, and visit summaries with CSV export.
 - API/AJAX module: provides JSON doctor availability and patient search endpoints for faster appointment workflows.
+
+## Screen Descriptions
+
+These descriptions can be used in place of screenshots when submitting the project documentation:
+
+- Public home screen: presents CityCare Medical Centre, patient login, patient sign up, staff access, 24/7 service messaging, ambulance support, and quick links to services, location, contact, and the care shop.
+- Services screen: explains clinic services, appointment support, diagnostics, pharmacy, emergency response, and directs users to book inquiries or choose paid care services.
+- Location screen: shows Plot 24 Yusuf Lule Road, Kampala and provides a working Google Maps directions link.
+- Contact screen: provides clinic contact details and a form for appointment booking or general inquiries.
+- Authentication screens: separate patient and staff login flows, patient registration, email verification, OTP verification for normal users, and password change for authenticated users.
+- Administrator dashboard: displays operational metrics, appointment performance charts, payment method summaries, doctor workload, attendance trends, and links to core management modules.
+- Receptionist workspace: supports patient search and appointment booking, editing, and cancellation while loading available doctor slots dynamically.
+- Doctor workspace: shows the doctor's schedule, patient records, previous visits, consultation notes, prescriptions, radiology orders, and treatment plans.
+- Cashier workspace: records and tracks payments, invoice status, payment methods, receipt references, Stripe checkout status, and payment reports.
+- Patient portal: lets patients view their profile, appointment requests, upcoming visits, medical reports, blood work, bills, insurance, family history, prescriptions, and treatment information.
+- Pharmacy workspace: allows pharmacists to manage drug categories, drug inventory, and prescription dispensing queues sent by doctors.
+- Radiology workspace: allows radiology staff to view imaging orders, update study status, and record result notes.
+- Reports screen: gives every role a report area, with report types filtered by role and CSV export available for the selected report.
+- Care shop and checkout screens: allow public visitors or patients to add services to a cart, submit mobile money or bank references for cashier verification, or proceed to Stripe-hosted card checkout.
 
 ## Local Setup
 

@@ -64,6 +64,11 @@ class RoleDashboardAccessTest extends TestCase
 
     public function test_patient_can_view_only_their_own_billing_records_and_cannot_record_payment(): void
     {
+        config([
+            'cashier.key' => null,
+            'cashier.secret' => null,
+        ]);
+
         $patientUser = User::factory()->create([
             'role' => 'patient',
             'status' => 'active',
