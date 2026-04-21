@@ -259,6 +259,8 @@ body {
 .app-sidebar {
     width: 280px;
     min-height: 100vh;
+    height: 100vh;
+    overflow: hidden;
     background: linear-gradient(180deg, #102734, #17374a 58%, #102734);
     color: #fff;
     position: sticky;
@@ -331,7 +333,31 @@ body {
     flex-direction: column;
     gap: 1rem;
     width: 100%;
+    height: 100vh;
+    overflow-y: auto;
+    overscroll-behavior: contain;
     padding: 1.2rem 1rem;
+    scrollbar-color: rgba(255, 255, 255, .35) transparent;
+    scrollbar-width: thin;
+}
+
+.sidebar-shell::-webkit-scrollbar {
+    width: 8px;
+}
+
+.sidebar-shell::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.sidebar-shell::-webkit-scrollbar-thumb {
+    border-radius: 999px;
+    background: rgba(255, 255, 255, .28);
+}
+
+.workspace-offcanvas .sidebar-shell {
+    height: auto;
+    min-height: 100%;
+    overflow-y: visible;
 }
 
 .sidebar-brand,
@@ -785,6 +811,11 @@ body {
     border-radius: 8px;
     padding: .55rem .7rem;
     background: #fff;
+}
+
+.document-upload-panel .form-text,
+.document-list-note {
+    color: #64748b;
 }
 
 @media (max-width: 1199px) {

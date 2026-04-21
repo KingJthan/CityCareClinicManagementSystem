@@ -59,6 +59,12 @@
             'match' => ['payments.*'],
             'icon' => 'PY',
         ] : null,
+        [
+            'label' => 'Documents',
+            'route' => route('documents.index'),
+            'match' => ['documents.*'],
+            'icon' => 'DO',
+        ],
         $user->hasRole('pharmacist') ? [
             'label' => 'Pharmacy',
             'route' => route('prescriptions.index'),

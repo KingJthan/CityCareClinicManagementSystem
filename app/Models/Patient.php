@@ -84,6 +84,11 @@ class Patient extends Model
         return $this->hasMany(FamilyHistory::class);
     }
 
+    public function documents(): HasMany
+    {
+        return $this->hasMany(ClinicDocument::class);
+    }
+
     public function getFullNameAttribute(): string
     {
         return trim($this->first_name . ' ' . $this->last_name);

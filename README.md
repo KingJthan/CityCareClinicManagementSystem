@@ -47,6 +47,7 @@ This README is written to satisfy the project documentation requirement in the m
 - Patient appointment requests that use live doctor availability and await clinic approval.
 - Patient check-in links and QR codes that open 30 minutes before appointment time.
 - Patient insurance, blood work/lab results, vital signs, prescriptions, family history, and treatment history views.
+- Secure document uploads for patient IDs, insurance cards, clinical files, payment proof, pharmacy files, radiology reports, and role-specific staff documents.
 - Patient portal for profile, appointments, visit history, and payment status.
 - Reports for appointments, payments, and visits with CSV export.
 - Search, filtering, pagination, soft deletes, and responsive Bootstrap UI.
@@ -64,6 +65,7 @@ This README is written to satisfy the project documentation requirement in the m
 - Nurse/RN/PCT workspace: can review patient information, provider, vitals, blood work, treatment history, and family history.
 - Reports module: produces appointment, payment, and visit summaries with CSV export.
 - API/AJAX module: provides JSON doctor availability and patient search endpoints for faster appointment workflows.
+- Documents module: allows authorized users to upload and download role-appropriate documents from the Documents page or from patient profiles.
 
 ## Screen Descriptions
 
@@ -82,6 +84,7 @@ These descriptions can be used in place of screenshots when submitting the proje
 - Pharmacy workspace: allows pharmacists to manage drug categories, drug inventory, and prescription dispensing queues sent by doctors.
 - Radiology workspace: allows radiology staff to view imaging orders, update study status, and record result notes.
 - Reports screen: gives every role a report area, with report types filtered by role and CSV export available for the selected report.
+- Documents screen: lets patients and staff upload secure role-specific files such as ID cards, insurance cards, payment proof, clinical attachments, pharmacy files, radiology reports, and support documents.
 - Care shop and checkout screens: allow public visitors or patients to add services to a cart, submit mobile money or bank references for cashier verification, or proceed to Stripe-hosted card checkout.
 
 ## Installation Steps
@@ -238,6 +241,7 @@ If every role login returns a 500 error on Cloud, first check that migrations ha
 - Departments: `/departments`
 - Appointments: `/appointments`
 - Payments: `/payments`
+- Documents: `/documents`
 - Drug Categories: `/drug-categories`
 - Drugs: `/drugs`
 - Prescription Queue: `/prescriptions`

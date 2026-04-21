@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Patient;
 use App\Models\User;
 use App\Rules\PhoneNumber;
+use App\Services\DocumentService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -12,6 +13,10 @@ use Illuminate\Validation\Rule;
 
 class PatientController extends Controller
 {
+    public function __construct(private DocumentService $documents)
+    {
+    }
+
     public function index(Request $request)
     {
         $patients = Patient::query()
@@ -74,11 +79,15 @@ class PatientController extends Controller
         $this->ensureCanView($patient);
 
         $patient->load(['user', 'appointments.doctor.user', 'appointments.department', 'consultations.doctor.user', 'payments', 'insurances', 'labResults.orderedBy.user', 'vitalSigns.recorder', 'familyHistories', 'prescriptions.drug']);
+        $user = request()->user();
 
         return view('patients.show', [
             'patient' => $patient,
+            'allDocumentTypes' => $this->documents->allTypeLabels(),
             'appointments' => $patient->appointments()->with(['doctor.user', 'department'])->latest('appointment_date')->take(10)->get(),
             'consultations' => $patient->consultations()->with('doctor.user')->latest()->take(10)->get(),
+            'documentTypes' => $this->documents->typeOptionsFor($user),
+            'patientDocuments' => $this->documents->viewableQueryFor($user)->with(['patient', 'uploader'])->where('patient_id', $patient->id)->latest()->take(8)->get(),
             'payments' => $patient->payments()->latest()->take(10)->get(),
             'insurances' => $patient->insurances()->latest()->take(5)->get(),
             'labResults' => $patient->labResults()->with('orderedBy.user')->latest('resulted_at')->take(10)->get(),

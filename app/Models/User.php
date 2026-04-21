@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use BackedEnum;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -64,6 +65,16 @@ class User extends Authenticatable
     public function patientProfile(): HasOne
     {
         return $this->hasOne(Patient::class);
+    }
+
+    public function ownedDocuments(): HasMany
+    {
+        return $this->hasMany(ClinicDocument::class, 'owner_user_id');
+    }
+
+    public function uploadedDocuments(): HasMany
+    {
+        return $this->hasMany(ClinicDocument::class, 'uploaded_by');
     }
 
     public function isActive(): bool

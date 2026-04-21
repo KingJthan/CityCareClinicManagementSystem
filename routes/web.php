@@ -3,6 +3,7 @@
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\ClinicDocumentController;
 use App\Http\Controllers\ConsultationController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DepartmentController;
@@ -55,6 +56,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/password', [AuthController::class, 'showChangePassword'])->name('password.edit');
     Route::put('/password', [AuthController::class, 'updatePassword'])->name('password.update');
+
+    Route::get('/documents', [ClinicDocumentController::class, 'index'])->name('documents.index');
+    Route::post('/documents', [ClinicDocumentController::class, 'store'])->name('documents.store');
+    Route::get('/documents/{document}/download', [ClinicDocumentController::class, 'download'])->name('documents.download');
+    Route::delete('/documents/{document}', [ClinicDocumentController::class, 'destroy'])->name('documents.destroy');
 
     Route::get('/my-profile', [PatientController::class, 'profile'])
         ->middleware('role:patient')

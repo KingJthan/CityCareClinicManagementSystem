@@ -51,6 +51,24 @@
         </div>
     </div>
 
+    <div class="row g-4 mb-4">
+        <div class="col-xl-4">
+            @include('documents._upload-panel', [
+                'documentPatient' => $patient,
+                'documentTypes' => $documentTypes,
+                'patients' => collect(),
+            ])
+        </div>
+        <div class="col-xl-8">
+            @include('documents._list', [
+                'allDocumentTypes' => $allDocumentTypes,
+                'documents' => $patientDocuments,
+                'title' => 'Patient documents',
+                'subtitle' => 'Use this area for IDs, insurance cards, referrals, lab files, and role-specific attachments.',
+            ])
+        </div>
+    </div>
+
     <div class="row g-4">
         <div class="col-xl-4">
             <div class="panel h-100">
