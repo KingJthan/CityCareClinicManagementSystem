@@ -181,6 +181,17 @@
                 event.preventDefault();
             }
         });
+
+        document.querySelectorAll('.alert[data-auto-dismiss]').forEach(function (element) {
+            const timeout = Number(element.getAttribute('data-auto-dismiss')) || 4500;
+            const alertInstance = bootstrap.Alert.getOrCreateInstance(element);
+
+            window.setTimeout(function () {
+                if (element.isConnected) {
+                    alertInstance.close();
+                }
+            }, timeout);
+        });
     </script>
     @stack('scripts')
 </body>
