@@ -37,6 +37,25 @@ class ExampleTest extends TestCase
         $this->get(route('contact', [], false))->assertOk()->assertSee('Book an appointment or send an inquiry');
     }
 
+    public function test_homepage_feature_tags_open_dedicated_public_pages(): void
+    {
+        $this->get(route('features.role-access', [], false))
+            ->assertOk()
+            ->assertSee('Role-based access that follows clinic duties');
+
+        $this->get(route('features.doctor-slots', [], false))
+            ->assertOk()
+            ->assertSee('Live doctor slot checks before a booking is confirmed');
+
+        $this->get(route('features.services-24-7', [], false))
+            ->assertOk()
+            ->assertSee('24/7 services that stay reachable beyond clinic counters');
+
+        $this->get(route('features.ambulance-support', [], false))
+            ->assertOk()
+            ->assertSee('Ambulance support linked to faster coordination');
+    }
+
     public function test_staff_login_page_is_separate_from_patient_login(): void
     {
         $this->get(route('staff.login', [], false))

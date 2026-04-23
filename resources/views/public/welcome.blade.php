@@ -19,10 +19,10 @@
                         <a class="btn btn-outline-light btn-lg" href="{{ route('contact') }}">Book or inquire</a>
                     </div>
                     <div class="public-tag-row mt-4">
-                        <span>Role-based access</span>
-                        <span>Live doctor slot checks</span>
-                        <span>24/7 services</span>
-                        <span>Ambulance support</span>
+                        <a href="{{ route('features.role-access') }}">Role-based access</a>
+                        <a href="{{ route('features.doctor-slots') }}">Live doctor slot checks</a>
+                        <a href="{{ route('features.services-24-7') }}">24/7 services</a>
+                        <a href="{{ route('features.ambulance-support') }}">Ambulance support</a>
                     </div>
                 </div>
 
@@ -124,8 +124,13 @@
                         <div class="showcase-card showcase-card-lg">
                             <img src="{{ asset('images/patient-care.jpg') }}" alt="Patient care support at CityCare">
                         </div>
-                        <div class="showcase-card">
-                            <img src="{{ asset('images/doctor-team.jpg') }}" alt="CityCare care team collaboration">
+                        <div class="showcase-card showcase-card-admin">
+                            <img src="{{ asset('images/jonathan-admin-portrait.png') }}" alt="Jonathan Mugume, CityCare administrator">
+                            <div class="showcase-card-body">
+                                <p class="eyebrow">Clinic leadership</p>
+                                <h3>Administrator oversight</h3>
+                                <p class="mb-0">CityCare pairs patient experience with visible administrative coordination, reporting, and day-to-day leadership.</p>
+                            </div>
                         </div>
                     </div>
                 </div>

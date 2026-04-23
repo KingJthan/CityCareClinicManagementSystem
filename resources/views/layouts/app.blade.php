@@ -29,6 +29,7 @@
                 'patient' => 'Patient',
             ];
             $roleLabel = $roleLabels[$user->role] ?? ucfirst($user->role);
+            $adminPortrait = $user->hasRole('admin') ? asset('images/jonathan-admin-portrait.png') : null;
         @endphp
 
         <div class="workspace-layout">
@@ -54,7 +55,13 @@
                         </button>
 
                         <div class="workspace-chip">
-                            <span class="workspace-chip-avatar">{{ strtoupper(substr($user->name, 0, 1)) }}</span>
+                            <span class="workspace-chip-avatar {{ $adminPortrait ? 'is-photo' : '' }}">
+                                @if($adminPortrait)
+                                    <img src="{{ $adminPortrait }}" alt="{{ $user->name }}">
+                                @else
+                                    {{ strtoupper(substr($user->name, 0, 1)) }}
+                                @endif
+                            </span>
                             <div class="d-none d-sm-block">
                                 <div class="fw-semibold">{{ $user->name }}</div>
                                 <div class="small text-muted">{{ $roleLabel }}</div>

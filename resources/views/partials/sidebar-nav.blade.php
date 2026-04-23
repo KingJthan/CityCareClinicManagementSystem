@@ -15,6 +15,7 @@
     ];
 
     $roleLabel = $roleLabels[$user->role] ?? ucfirst($user->role);
+    $adminPortrait = $user->hasRole('admin') ? asset('images/jonathan-admin-portrait.png') : null;
 
     $navItems = array_values(array_filter([
         [
@@ -120,7 +121,13 @@
     </div>
 
     <div class="sidebar-user-card">
-        <div class="sidebar-user-avatar">{{ strtoupper(substr($user->name, 0, 1)) }}</div>
+        <div class="sidebar-user-avatar {{ $adminPortrait ? 'is-photo' : '' }}">
+            @if($adminPortrait)
+                <img src="{{ $adminPortrait }}" alt="{{ $user->name }}">
+            @else
+                {{ strtoupper(substr($user->name, 0, 1)) }}
+            @endif
+        </div>
         <div>
             <div class="fw-semibold">{{ $user->name }}</div>
             <div class="small text-white-50">{{ $roleLabel }}</div>
