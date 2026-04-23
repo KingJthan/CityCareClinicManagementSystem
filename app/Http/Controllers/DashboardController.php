@@ -47,6 +47,7 @@ class DashboardController extends Controller
 
         return view('dashboards.index', [
             'roleLabel' => AuthController::roleLabels()[$user->role] ?? ucfirst($user->role),
+            'currentDateLabel' => now()->format('l, M d'),
             'dashboardSubtitle' => $this->subtitleFor($request),
             'metricCards' => $this->metricCards($request),
             'upcomingAppointments' => $appointmentsQuery->take(8)->get(),
@@ -69,75 +70,75 @@ class DashboardController extends Controller
 
         if ($user->hasRole('admin')) {
             return [
-                ['label' => 'Today appointments', 'value' => Appointment::whereDate('appointment_date', today())->count(), 'tone' => 'primary'],
-                ['label' => 'Active patients', 'value' => Patient::where('status', 'active')->count(), 'tone' => 'success'],
-                ['label' => 'Doctors on roster', 'value' => Doctor::where('status', 'active')->count(), 'tone' => 'info'],
-                ['label' => 'Pending payments', 'value' => Payment::where('status', 'pending')->count(), 'tone' => 'warning'],
-                ['label' => 'Departments', 'value' => Department::where('status', 'active')->count(), 'tone' => 'primary'],
-                ['label' => 'Month revenue', 'value' => number_format(Payment::where('status', 'paid')->whereMonth('paid_at', now()->month)->sum('amount')), 'tone' => 'success'],
+                $this->card('Today appointments', Appointment::whereDate('appointment_date', today())->count(), 'primary', 'AP', 'Daily clinic flow'),
+                $this->card('Active patients', Patient::where('status', 'active')->count(), 'success', 'PT', 'Current patient records'),
+                $this->card('Doctors on roster', Doctor::where('status', 'active')->count(), 'info', 'DR', 'Available clinicians'),
+                $this->card('Pending payments', Payment::where('status', 'pending')->count(), 'warning', 'PY', 'Awaiting cashier action'),
+                $this->card('Departments', Department::where('status', 'active')->count(), 'secondary', 'DP', 'Operational units'),
+                $this->card('Month revenue', number_format(Payment::where('status', 'paid')->whereMonth('paid_at', now()->month)->sum('amount')), 'accent', 'UGX', 'Cashier and admin only'),
             ];
         }
 
         if ($user->hasRole('receptionist')) {
             return [
-                ['label' => 'Today appointments', 'value' => Appointment::whereDate('appointment_date', today())->count(), 'tone' => 'primary'],
-                ['label' => 'Scheduled visits', 'value' => Appointment::where('status', 'scheduled')->whereDate('appointment_date', '>=', today())->count(), 'tone' => 'info'],
-                ['label' => 'Checked in today', 'value' => Appointment::where('status', 'checked_in')->whereDate('appointment_date', today())->count(), 'tone' => 'warning'],
-                ['label' => 'Available doctors', 'value' => Doctor::where('status', 'active')->count(), 'tone' => 'success'],
+                $this->card('Today appointments', Appointment::whereDate('appointment_date', today())->count(), 'primary', 'AP', 'Reception queue'),
+                $this->card('Scheduled visits', Appointment::where('status', 'scheduled')->whereDate('appointment_date', '>=', today())->count(), 'info', 'SC', 'Future confirmed visits'),
+                $this->card('Checked in today', Appointment::where('status', 'checked_in')->whereDate('appointment_date', today())->count(), 'warning', 'IN', 'Front desk arrivals'),
+                $this->card('Available doctors', Doctor::where('status', 'active')->count(), 'success', 'DR', 'Roster ready'),
             ];
         }
 
         if ($user->hasRole('doctor') && $doctor) {
             return [
-                ['label' => 'My appointments today', 'value' => Appointment::where('doctor_id', $doctor->id)->whereDate('appointment_date', today())->count(), 'tone' => 'primary'],
-                ['label' => 'Upcoming appointments', 'value' => Appointment::where('doctor_id', $doctor->id)->whereDate('appointment_date', '>=', today())->count(), 'tone' => 'info'],
-                ['label' => 'Completed visits', 'value' => Appointment::where('doctor_id', $doctor->id)->where('status', 'completed')->count(), 'tone' => 'success'],
-                ['label' => 'Patients seen', 'value' => Appointment::where('doctor_id', $doctor->id)->distinct('patient_id')->count('patient_id'), 'tone' => 'warning'],
+                $this->card('My appointments today', Appointment::where('doctor_id', $doctor->id)->whereDate('appointment_date', today())->count(), 'primary', 'AP', 'Today schedule'),
+                $this->card('Upcoming appointments', Appointment::where('doctor_id', $doctor->id)->whereDate('appointment_date', '>=', today())->count(), 'info', 'UP', 'Future bookings'),
+                $this->card('Completed visits', Appointment::where('doctor_id', $doctor->id)->where('status', 'completed')->count(), 'success', 'OK', 'Closed consultations'),
+                $this->card('Patients seen', Appointment::where('doctor_id', $doctor->id)->distinct('patient_id')->count('patient_id'), 'warning', 'PT', 'Distinct patients'),
             ];
         }
 
         if ($user->hasRole('cashier')) {
             return [
-                ['label' => 'Pending payments', 'value' => Payment::where('status', 'pending')->count(), 'tone' => 'warning'],
-                ['label' => 'Paid today', 'value' => Payment::where('status', 'paid')->whereDate('paid_at', today())->count(), 'tone' => 'success'],
-                ['label' => 'Receipts today', 'value' => number_format(Payment::where('status', 'paid')->whereDate('paid_at', today())->sum('amount')), 'tone' => 'info'],
-                ['label' => 'Month revenue', 'value' => number_format(Payment::where('status', 'paid')->whereMonth('paid_at', now()->month)->sum('amount')), 'tone' => 'success'],
+                $this->card('Pending payments', Payment::where('status', 'pending')->count(), 'warning', 'PY', 'Needs cashier review'),
+                $this->card('Paid today', Payment::where('status', 'paid')->whereDate('paid_at', today())->count(), 'success', 'OK', 'Completed receipts'),
+                $this->card('Receipts today', number_format(Payment::where('status', 'paid')->whereDate('paid_at', today())->sum('amount')), 'info', 'UGX', 'Collected today'),
+                $this->card('Month revenue', number_format(Payment::where('status', 'paid')->whereMonth('paid_at', now()->month)->sum('amount')), 'accent', 'REV', 'Role-limited visibility'),
             ];
         }
 
         if ($user->hasRole('pharmacist')) {
             return [
-                ['label' => 'Pending prescriptions', 'value' => Prescription::where('status', 'pending')->count(), 'tone' => 'warning'],
-                ['label' => 'Dispensed today', 'value' => Prescription::where('status', 'dispensed')->whereDate('dispensed_at', today())->count(), 'tone' => 'success'],
-                ['label' => 'Active drugs', 'value' => Drug::where('status', 'active')->count(), 'tone' => 'info'],
-                ['label' => 'Low stock drugs', 'value' => Drug::whereColumn('stock_quantity', '<=', 'reorder_level')->count(), 'tone' => 'primary'],
+                $this->card('Pending prescriptions', Prescription::where('status', 'pending')->count(), 'warning', 'RX', 'Ready for review'),
+                $this->card('Dispensed today', Prescription::where('status', 'dispensed')->whereDate('dispensed_at', today())->count(), 'success', 'OK', 'Completed dispensing'),
+                $this->card('Active drugs', Drug::where('status', 'active')->count(), 'info', 'DG', 'Available stock items'),
+                $this->card('Low stock drugs', Drug::whereColumn('stock_quantity', '<=', 'reorder_level')->count(), 'primary', 'LS', 'Reorder attention'),
             ];
         }
 
         if ($user->hasRole('radiology')) {
             return [
-                ['label' => 'Requested studies', 'value' => RadiologyOrder::where('status', 'requested')->count(), 'tone' => 'warning'],
-                ['label' => 'In progress', 'value' => RadiologyOrder::where('status', 'in_progress')->count(), 'tone' => 'info'],
-                ['label' => 'Completed today', 'value' => RadiologyOrder::where('status', 'completed')->whereDate('resulted_at', today())->count(), 'tone' => 'success'],
-                ['label' => 'Urgent queue', 'value' => RadiologyOrder::whereIn('priority', ['urgent', 'stat'])->where('status', '!=', 'completed')->count(), 'tone' => 'primary'],
+                $this->card('Requested studies', RadiologyOrder::where('status', 'requested')->count(), 'warning', 'RD', 'Incoming imaging'),
+                $this->card('In progress', RadiologyOrder::where('status', 'in_progress')->count(), 'info', 'IP', 'Active studies'),
+                $this->card('Completed today', RadiologyOrder::where('status', 'completed')->whereDate('resulted_at', today())->count(), 'success', 'OK', 'Resulted today'),
+                $this->card('Urgent queue', RadiologyOrder::whereIn('priority', ['urgent', 'stat'])->where('status', '!=', 'completed')->count(), 'primary', 'UR', 'Priority cases'),
             ];
         }
 
         if ($user->hasRole('patient') && $patient) {
             return [
-                ['label' => 'Upcoming appointments', 'value' => Appointment::where('patient_id', $patient->id)->whereDate('appointment_date', '>=', today())->count(), 'tone' => 'primary'],
-                ['label' => 'Completed visits', 'value' => Appointment::where('patient_id', $patient->id)->where('status', 'completed')->count(), 'tone' => 'success'],
-                ['label' => 'Pending payments', 'value' => Payment::where('patient_id', $patient->id)->where('status', 'pending')->count(), 'tone' => 'warning'],
-                ['label' => 'Paid invoices', 'value' => Payment::where('patient_id', $patient->id)->where('status', 'paid')->count(), 'tone' => 'info'],
+                $this->card('Upcoming appointments', Appointment::where('patient_id', $patient->id)->whereDate('appointment_date', '>=', today())->count(), 'primary', 'AP', 'Your next visits'),
+                $this->card('Completed visits', Appointment::where('patient_id', $patient->id)->where('status', 'completed')->count(), 'success', 'OK', 'Past care history'),
+                $this->card('Pending payments', Payment::where('patient_id', $patient->id)->where('status', 'pending')->count(), 'warning', 'PY', 'Awaiting cashier or payment'),
+                $this->card('Paid invoices', Payment::where('patient_id', $patient->id)->where('status', 'paid')->count(), 'info', 'PD', 'Settled invoices'),
             ];
         }
 
         if ($user->hasRole(['rn', 'pct', 'housekeeping', 'nurse', 'dietary'])) {
             return [
-                ['label' => 'Today appointments', 'value' => Appointment::whereDate('appointment_date', today())->count(), 'tone' => 'primary'],
-                ['label' => 'Checked in today', 'value' => Appointment::where('status', 'checked_in')->whereDate('appointment_date', today())->count(), 'tone' => 'info'],
-                ['label' => 'Active departments', 'value' => Department::where('status', 'active')->count(), 'tone' => 'success'],
-                ['label' => 'Completed visits', 'value' => Appointment::where('status', 'completed')->whereDate('appointment_date', today())->count(), 'tone' => 'warning'],
+                $this->card('Today appointments', Appointment::whereDate('appointment_date', today())->count(), 'primary', 'AP', 'Operational queue'),
+                $this->card('Checked in today', Appointment::where('status', 'checked_in')->whereDate('appointment_date', today())->count(), 'info', 'IN', 'Ready patients'),
+                $this->card('Active departments', Department::where('status', 'active')->count(), 'success', 'DP', 'Care units'),
+                $this->card('Completed visits', Appointment::where('status', 'completed')->whereDate('appointment_date', today())->count(), 'warning', 'CV', 'Daily flow closed'),
             ];
         }
 
@@ -352,5 +353,16 @@ class DashboardController extends Controller
             ->filter(fn ($item) => $item['value'] > 0)
             ->values()
             ->all();
+    }
+
+    private function card(string $label, string|int $value, string $tone, string $icon, string $note): array
+    {
+        return [
+            'label' => $label,
+            'value' => $value,
+            'tone' => $tone,
+            'icon' => $icon,
+            'note' => $note,
+        ];
     }
 }

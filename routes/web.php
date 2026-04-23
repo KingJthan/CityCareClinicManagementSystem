@@ -40,9 +40,11 @@ Route::get('/appointment-check-in/{appointment}', [AppointmentController::class,
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
     Route::get('/staff/login', [AuthController::class, 'showStaffLogin'])->name('staff.login');
+    Route::get('/staff/register', [AuthController::class, 'showStaffRegister'])->name('staff.register');
     Route::post('/login', [AuthController::class, 'login'])->name('login.store');
     Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
     Route::post('/register', [AuthController::class, 'register'])->name('register.store');
+    Route::post('/staff/register', [AuthController::class, 'registerStaff'])->name('staff.register.store');
     Route::get('/verify-email', [AuthController::class, 'showVerifyEmail'])->name('verification.form');
     Route::post('/verify-email', [AuthController::class, 'verifyEmail'])->name('verification.verify');
     Route::post('/verify-email/resend', [AuthController::class, 'resendEmailVerification'])->name('verification.resend');

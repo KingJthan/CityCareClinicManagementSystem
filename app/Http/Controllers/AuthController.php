@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Department;
+use App\Models\Doctor;
 use App\Models\Patient;
 use App\Models\User;
 use App\Rules\PhoneNumber;
@@ -32,6 +34,14 @@ class AuthController extends Controller
         return view('auth.login', [
             'roles' => $roles,
             'portal' => 'staff',
+        ]);
+    }
+
+    public function showStaffRegister()
+    {
+        return view('auth.staff-register', [
+            'departments' => Department::where('status', 'active')->orderBy('name')->get(),
+            'roles' => self::staffRegistrationRoles(),
         ]);
     }
 
@@ -99,6 +109,62 @@ class AuthController extends Controller
     public function showRegister()
     {
         return view('auth.register');
+    }
+
+    public function registerStaff(Request $request)
+    {
+        $data = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'email', 'max:255', 'unique:users,email'],
+            'phone' => ['nullable', new PhoneNumber],
+            'role' => ['required', Rule::in(array_keys(self::staffRegistrationRoles()))],
+            'department_id' => ['nullable', 'integer', 'exists:departments,id'],
+            'password' => ['required', 'confirmed', 'min:8'],
+        ]);
+
+        if ($data['role'] === 'doctor' && empty($data['department_id'])) {
+            return back()
+                ->withErrors(['department_id' => 'Doctors require a department selection.'])
+                ->withInput($request->except('password', 'password_confirmation'));
+        }
+
+        $user = DB::transaction(function () use ($data) {
+            $user = User::create([
+                'name' => $data['name'],
+                'email' => $data['email'],
+                'phone' => $data['phone'] ?? null,
+                'password' => Hash::make($data['password']),
+                'role' => $data['role'],
+                'status' => 'active',
+                'email_verified_at' => null,
+            ]);
+
+            if ($data['role'] === 'doctor') {
+                Doctor::create([
+                    'user_id' => $user->id,
+                    'department_id' => $data['department_id'],
+                    'staff_number' => 'DOC-' . now()->format('ymd') . '-' . str_pad((string) random_int(1, 999), 3, '0', STR_PAD_LEFT),
+                    'license_number' => 'LIC-' . strtoupper(substr(md5($user->email), 0, 10)),
+                    'specialization' => 'General Practice',
+                    'consultation_fee' => 85000,
+                    'shift_starts_at' => '08:00:00',
+                    'shift_ends_at' => '17:00:00',
+                    'slot_minutes' => 30,
+                    'working_days' => [1, 2, 3, 4, 5],
+                    'room' => 'Assigned on approval',
+                    'status' => 'active',
+                ]);
+            }
+
+            return $user;
+        });
+
+        $this->issueEmailVerificationCode($user);
+        $request->session()->put('verification_user_id', $user->id);
+
+        return redirect()
+            ->route('verification.form')
+            ->with('success', 'Your staff account has been created. Verify your email to continue.');
     }
 
     public function register(Request $request)
@@ -303,6 +369,22 @@ class AuthController extends Controller
             'nurse' => 'Nurse',
             'dietary' => 'Dietary',
             'patient' => 'Patient',
+        ];
+    }
+
+    public static function staffRegistrationRoles(): array
+    {
+        return [
+            'doctor' => 'Doctor',
+            'receptionist' => 'Receptionist',
+            'cashier' => 'Cashier',
+            'pharmacist' => 'Pharmacist',
+            'radiology' => 'Radiology',
+            'rn' => 'RN',
+            'pct' => 'PCT',
+            'housekeeping' => 'House Keeping',
+            'nurse' => 'Nurse',
+            'dietary' => 'Dietary',
         ];
     }
 

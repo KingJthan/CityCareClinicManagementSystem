@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -48,11 +48,17 @@
                         </div>
                     </div>
 
-                    <div class="workspace-chip">
-                        <span class="workspace-chip-avatar">{{ strtoupper(substr($user->name, 0, 1)) }}</span>
-                        <div class="d-none d-sm-block">
-                            <div class="fw-semibold">{{ $user->name }}</div>
-                            <div class="small text-muted">{{ $roleLabel }}</div>
+                    <div class="d-flex align-items-center gap-2">
+                        <button class="btn btn-outline-secondary theme-toggle-btn" type="button" data-theme-toggle aria-label="Toggle light and dark mode">
+                            <span class="theme-toggle-icon" data-theme-icon>Dark</span>
+                        </button>
+
+                        <div class="workspace-chip">
+                            <span class="workspace-chip-avatar">{{ strtoupper(substr($user->name, 0, 1)) }}</span>
+                            <div class="d-none d-sm-block">
+                                <div class="fw-semibold">{{ $user->name }}</div>
+                                <div class="small text-muted">{{ $roleLabel }}</div>
+                            </div>
                         </div>
                     </div>
                 </header>
@@ -100,6 +106,9 @@
                 </div>
 
                 <div class="d-flex align-items-center gap-2">
+                    <button class="btn btn-sm btn-outline-secondary theme-toggle-btn" type="button" data-theme-toggle aria-label="Toggle light and dark mode">
+                        <span data-theme-icon>Dark</span>
+                    </button>
                     <a class="btn btn-sm btn-outline-secondary" href="{{ route('cart.index') }}">
                         Cart
                         @if($careCartCount > 0)
@@ -112,6 +121,7 @@
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li><a class="dropdown-item" href="{{ route('staff.login') }}">Staff portal login</a></li>
+                            <li><a class="dropdown-item" href="{{ route('staff.register') }}">Staff registration</a></li>
                         </ul>
                     </div>
                     <a class="btn btn-sm btn-outline-secondary" href="{{ route('register') }}">Patient sign up</a>
@@ -137,6 +147,28 @@
 
     <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
     <script>
+        (function () {
+            const root = document.documentElement;
+            const storageKey = 'citycare-theme';
+            const applyTheme = function (theme) {
+                root.setAttribute('data-theme', theme);
+                document.querySelectorAll('[data-theme-icon]').forEach(function (label) {
+                    label.textContent = theme === 'dark' ? 'Light' : 'Dark';
+                });
+            };
+
+            const storedTheme = localStorage.getItem(storageKey);
+            applyTheme(storedTheme === 'dark' ? 'dark' : 'light');
+
+            document.querySelectorAll('[data-theme-toggle]').forEach(function (button) {
+                button.addEventListener('click', function () {
+                    const nextTheme = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+                    localStorage.setItem(storageKey, nextTheme);
+                    applyTheme(nextTheme);
+                });
+            });
+        })();
+
         document.addEventListener('submit', function (event) {
             if (event.target.matches('[data-confirm]') && !confirm(event.target.getAttribute('data-confirm'))) {
                 event.preventDefault();

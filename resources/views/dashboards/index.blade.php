@@ -3,23 +3,55 @@
 @section('title', 'Dashboard | CityCare')
 
 @section('content')
-    <x-page-header :title="$roleLabel . ' Dashboard'" :subtitle="$dashboardSubtitle">
-        <x-slot:actions>
-            @if(auth()->user()->hasRole(['admin', 'receptionist']))
-                <a class="btn btn-dark" href="{{ route('appointments.create') }}">Book appointment</a>
-            @endif
-            @if(auth()->user()->hasRole('cashier'))
-                <a class="btn btn-dark" href="{{ route('payments.create') }}">Record payment</a>
-            @endif
-            @if(auth()->user()->hasRole('patient'))
-                <a class="btn btn-dark" href="{{ route('patients.profile') }}">My profile</a>
-            @endif
-        </x-slot:actions>
-    </x-page-header>
+    <div class="dashboard-hero-grid mb-4">
+        <section class="dashboard-hero-panel">
+            <div class="dashboard-hero-copy">
+                <span class="dashboard-hero-tag">{{ $currentDateLabel }}</span>
+                <h1>{{ $roleLabel }} Dashboard</h1>
+                <p>{{ $dashboardSubtitle }}</p>
+            </div>
+            <div class="dashboard-hero-actions">
+                @if(auth()->user()->hasRole(['admin', 'receptionist']))
+                    <a class="btn btn-dark" href="{{ route('appointments.create') }}">Book appointment</a>
+                @endif
+                @if(auth()->user()->hasRole('cashier'))
+                    <a class="btn btn-dark" href="{{ route('payments.create') }}">Record payment</a>
+                @endif
+                @if(auth()->user()->hasRole('patient'))
+                    <a class="btn btn-dark" href="{{ route('patients.profile') }}">My profile</a>
+                @endif
+                <a class="btn btn-outline-secondary" href="{{ route('reports.index') }}">Reports</a>
+                <a class="btn btn-outline-secondary" href="{{ route('documents.index') }}">Documents</a>
+            </div>
+        </section>
+
+        <aside class="dashboard-focus-panel">
+            <div class="dashboard-focus-header">
+                <div>
+                    <span class="dashboard-focus-label">Today board</span>
+                    <h2>At-a-glance activity</h2>
+                </div>
+                <span class="dashboard-focus-badge">{{ $upcomingAppointments->count() }} queued</span>
+            </div>
+            <div class="dashboard-focus-list">
+                @forelse($upcomingAppointments->take(3) as $appointment)
+                    <div class="dashboard-focus-item">
+                        <div class="dashboard-focus-time">{{ substr($appointment->start_time, 0, 5) }}</div>
+                        <div>
+                            <strong>{{ $appointment->patient->full_name }}</strong>
+                            <div class="small text-muted">{{ $appointment->doctor->display_name }} - {{ ucfirst($appointment->status) }}</div>
+                        </div>
+                    </div>
+                @empty
+                    <div class="text-muted small">No appointment items are queued right now.</div>
+                @endforelse
+            </div>
+        </aside>
+    </div>
 
     <div class="dashboard-metrics mb-4">
         @foreach($metricCards as $metric)
-            <x-metric-card :label="$metric['label']" :value="$metric['value']" :tone="$metric['tone']" />
+            <x-metric-card :label="$metric['label']" :value="$metric['value']" :tone="$metric['tone']" :icon="$metric['icon']" :note="$metric['note']" />
         @endforeach
     </div>
 
@@ -39,7 +71,12 @@
                     $pieStyle = $segments ? implode(', ', $segments) : '#d8dee8 0deg 360deg';
                 @endphp
                 <div class="panel panel-pad dashboard-chart">
-                    <h2 class="h6 mb-3">{{ $chart['title'] }}</h2>
+                    <div class="dashboard-section-head">
+                        <div>
+                            <span class="dashboard-section-tag">Insights</span>
+                            <h2 class="h6 mb-0">{{ $chart['title'] }}</h2>
+                        </div>
+                    </div>
                     @if($chart['type'] === 'pie')
                         <div class="chart-pie-wrap">
                             <div class="chart-pie" style="background: conic-gradient({{ $pieStyle }});"></div>
@@ -73,8 +110,11 @@
     <div class="row g-4">
         <div class="col-lg-8">
             <div class="panel">
-                <div class="panel-pad border-bottom">
-                    <h2 class="h5 mb-0">Upcoming appointments</h2>
+                <div class="panel-pad border-bottom dashboard-section-head">
+                    <div>
+                        <span class="dashboard-section-tag">Schedule</span>
+                        <h2 class="h5 mb-0">Upcoming appointments</h2>
+                    </div>
                 </div>
                 <div class="table-responsive">
                     <table class="table mb-0">
@@ -107,8 +147,11 @@
 
         <div class="col-lg-4">
             <div class="panel">
-                <div class="panel-pad border-bottom">
-                    <h2 class="h5 mb-0">{{ $canSeePaymentSummary ? 'Recent payments' : 'Assigned duties' }}</h2>
+                <div class="panel-pad border-bottom dashboard-section-head">
+                    <div>
+                        <span class="dashboard-section-tag">{{ $canSeePaymentSummary ? 'Finance' : 'Role focus' }}</span>
+                        <h2 class="h5 mb-0">{{ $canSeePaymentSummary ? 'Recent payments' : 'Assigned duties' }}</h2>
+                    </div>
                 </div>
 
                 @if($canSeePaymentSummary)
@@ -142,8 +185,11 @@
         <div class="row g-4 mt-1">
             <div class="col-lg-6">
                 <div class="panel">
-                    <div class="panel-pad border-bottom">
-                        <h2 class="h5 mb-0">Doctor workload today</h2>
+                    <div class="panel-pad border-bottom dashboard-section-head">
+                        <div>
+                            <span class="dashboard-section-tag">Capacity</span>
+                            <h2 class="h5 mb-0">Doctor workload today</h2>
+                        </div>
                     </div>
                     <div class="table-responsive">
                         <table class="table mb-0">
@@ -166,8 +212,11 @@
 
             <div class="col-lg-6">
                 <div class="panel">
-                    <div class="panel-pad border-bottom">
-                        <h2 class="h5 mb-0">Patient attendance trend</h2>
+                    <div class="panel-pad border-bottom dashboard-section-head">
+                        <div>
+                            <span class="dashboard-section-tag">Trend</span>
+                            <h2 class="h5 mb-0">Patient attendance trend</h2>
+                        </div>
                     </div>
                     <div class="panel-pad">
                         @foreach($attendanceTrend as $trend)

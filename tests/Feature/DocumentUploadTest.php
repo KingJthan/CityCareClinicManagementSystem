@@ -107,4 +107,31 @@ class DocumentUploadTest extends TestCase
             'document_type' => 'cleaning_checklist',
         ]);
     }
+
+    public function test_documents_page_opens_for_each_supported_role(): void
+    {
+        $roles = ['admin', 'receptionist', 'doctor', 'cashier', 'pharmacist', 'radiology', 'rn', 'pct', 'housekeeping', 'nurse', 'dietary', 'patient'];
+
+        foreach ($roles as $role) {
+            $user = User::factory()->create([
+                'role' => $role,
+                'status' => 'active',
+            ]);
+
+            if ($role === 'patient') {
+                Patient::create([
+                    'user_id' => $user->id,
+                    'patient_number' => 'CCP-26-' . str_pad((string) random_int(3000, 9999), 4, '0', STR_PAD_LEFT),
+                    'first_name' => 'Role',
+                    'last_name' => 'Patient',
+                    'status' => 'active',
+                ]);
+            }
+
+            $this->actingAs($user)
+                ->get(route('documents.index', [], false))
+                ->assertOk()
+                ->assertSee('Documents');
+        }
+    }
 }
