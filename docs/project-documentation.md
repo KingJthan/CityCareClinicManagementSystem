@@ -91,6 +91,7 @@ Demo accounts ending in `@citycare.test` bypass OTP for classroom testing. Newly
 - Staff and patient login separation.
 - OTP login for normal users.
 - Role-based access for Administrator, Receptionist, Doctor, Cashier, Pharmacist, Radiology, RN, PCT, House Keeping, Nurse, Dietary, and Patient.
+- Same-browser multi-login support using workspace sessions so different roles can stay active in separate tabs without logging each other out.
 - CRUD management for patients, doctors, departments, appointments, payments, drug categories, and drugs.
 - Doctor schedule definition using working days, shift start time, shift end time, and appointment slot length.
 - Appointment booking with automatic doctor availability checks to prevent double-booking.
@@ -105,6 +106,7 @@ Demo accounts ending in `@citycare.test` bypass OTP for classroom testing. Newly
 - Patient medical information including blood work, lab results, vital signs, insurance, family history, prescriptions, and treatment details.
 - Secure document upload for patient IDs, insurance cards, clinical attachments, payment proof, pharmacy documents, radiology reports, and role-specific staff documents.
 - Dashboards with role-specific metrics, graphs, and pie charts.
+- Workspace switching in the top bar when more than one role session is active.
 - Light and dark display mode across public pages, authentication pages, and staff workspaces.
 - Auto-dismissing success and error flash messages after login, logout, create, update, and delete actions.
 - Administrator portrait branding on the public homepage and administrator workspace profile areas.
@@ -134,7 +136,7 @@ The contact screen includes clinic contact details and a form for appointment bo
 
 ### Authentication
 
-The authentication module provides patient login, hidden staff login, patient registration, email verification, OTP verification, and password change functionality.
+The authentication module provides patient login, hidden staff login, patient registration, email verification, OTP verification, password change functionality, and same-browser multi-login workspaces. Staff users enter through the homepage staff-access menu, select the intended staff role, and then continue into a role-specific workspace URL after authentication.
 
 ### Administrator Dashboard
 
@@ -158,7 +160,7 @@ The patient portal lets patients view their profile, upcoming appointments, appo
 
 ### Pharmacy
 
-The pharmacy module is available to pharmacists only. Pharmacists can manage drug categories, drug stock, and prescription dispensing queues. Doctors prescribe drugs and send them to the pharmacy queue.
+The pharmacy module is available to pharmacists only. Pharmacists can manage drug categories, drug stock, and prescription dispensing queues. Doctors prescribe drugs and send them to the pharmacy queue, while the pharmacist dashboard highlights pending prescriptions, active drugs, and low-stock items.
 
 ### Radiology
 
@@ -178,99 +180,115 @@ The care shop allows public users and patients to add services to a cart. Checko
 
 ## 6. Screenshots and Page Purposes
 
-The screenshots below document the main pages and explain each page's purpose in the system.
+The screenshots below reflect the current CityCare interface and explain what each page is responsible for in the final submitted project.
 
 ### Public Homepage
 
-Screenshot: `docs/screenshots/homepage.png`
+![Public Homepage](screenshots/homepage.png)
 
-Purpose: introduces CityCare Medical Centre to public visitors and gives quick access to services, patient login, patient sign up, staff access, care shop, contact, and location information. It supports the public-facing requirement of making the clinic system professional and easy to enter.
+Purpose: introduces CityCare Medical Centre to public visitors and gives quick access to services, patient login, patient sign up, staff access, care shop, contact, and location information. It also highlights the clickable feature links for role-based access, live doctor slot checks, 24/7 services, and ambulance support.
 
-It now also includes clickable feature links for role-based access, live doctor slot checks, 24/7 services, and ambulance support, plus the administrator leadership portrait in the public showcase section.
+### Public Access and Staff Entry
 
-### Services Page
+![Public Access and Staff Entry](screenshots/authentication.png)
 
-Screenshot: `docs/screenshots/services.png`
+Purpose: shows how staff access stays separate from the patient portal on the public navigation bar. From this entry point, staff users open their own login path while patients continue through the patient login and patient sign-up options.
 
-Purpose: explains the clinic's available services, including appointment-based care, emergency support, ambulance service, diagnostics, and patient support. It guides public visitors toward booking or choosing paid care services.
+### Staff Role Selection
 
-### Location Page
+![Staff Role Selection](screenshots/authenticate.png)
 
-Screenshot: `docs/screenshots/location.png`
+Purpose: demonstrates the role selector used before staff login. This helps prevent staff from entering the wrong portal and supports the role-based authorization requirement for administrator, receptionist, doctor, cashier, pharmacist, radiology, RN, PCT, house keeping, nurse, and dietary roles.
 
-Purpose: displays the clinic address at Plot 24 Yusuf Lule Road, Kampala and provides a directions button so visitors can open a route in Google Maps.
+### Staff Login Page
 
-### Contact Page
+![Staff Login Page](screenshots/login.png)
 
-Screenshot: `docs/screenshots/contactus.png`
-
-Purpose: provides a public appointment or inquiry form. Patients or visitors can submit appointment requests, questions, and contact information for staff follow-up.
-
-### Authentication and Login Pages
-
-Screenshots: `docs/screenshots/authentication.png`, `docs/screenshots/authenticate.png`
-
-Purpose: show the separated patient and staff access flow. Patient users use the public patient login and registration path, while staff access is kept under a separate staff portal login. Email verification and OTP login protect account access.
-
-### Administrator Dashboard
-
-Screenshot: `docs/screenshots/administrator-dashboard.png`
-
-Purpose: gives the administrator a central monitoring workspace for appointments, active patients, doctors, pending payments, departments, revenue, performance charts, doctor workload, and attendance trends.
-
-### Receptionist Dashboard
-
-Screenshot: `docs/screenshots/reception.png`
-
-Purpose: supports reception staff with appointment booking, patient searching, and doctor availability checks while hiding revenue and cashier-only payment functions.
-
-### Doctor Dashboard
-
-Screenshot: `docs/screenshots/doctor.png`
-
-Purpose: gives doctors access to their schedule, patient details, visit history, treatment planning, prescriptions, consultation notes, and role-specific performance figures.
-
-### Cashier Dashboard
-
-Screenshot: `docs/screenshots/cashier.png`
-
-Purpose: supports cashier duties such as payment recording, pending invoices, receipt tracking, payment summaries, and revenue figures. Receptionists do not receive cashier payment permissions.
-
-### Patient Dashboard and Portal
-
-Screenshot: `docs/screenshots/patient.png`
-
-Purpose: allows patients to view their personal profile, appointments, medical reports, blood work, bills, insurance details, prescriptions, treatment information, and uploaded documents.
-
-### Reports Page
-
-Screenshot: `docs/screenshots/report.png`
-
-Purpose: provides role-based reporting with reports filtered according to the signed-in role. It supports appointment, payment, visit, prescription, radiology, and inventory reporting with CSV export.
+Purpose: presents the styled staff portal login form with role selection, demo password guidance, and secure entry into the CityCare workspace. This screen supports the authentication requirement together with email verification, OTP, and role-specific access.
 
 ### Care Shop
 
-Screenshot: `docs/screenshots/careshop.png`
+![Care Shop](screenshots/careshop.png)
 
-Purpose: allows public users and patients to select clinic services as billable products before checkout. It supports paid services and Stripe checkout requirements.
+Purpose: allows public users and patients to choose clinic services as billable products. The page supports the billing requirement by connecting services to cart checkout and payment processing.
 
-### Cart Review
+### Cashier Dashboard
 
-Screenshot: `docs/screenshots/reviewcart.png`
+![Cashier Dashboard](screenshots/cashier.png)
 
-Purpose: allows the user to review selected services, quantities, and totals before proceeding to checkout.
+Purpose: supports cashier duties such as payment recording, pending invoice review, receipt tracking, daily collection summaries, and monthly revenue visibility. It confirms that revenue is available to cashier and administrator roles only.
+
+### Stripe Checkout
+
+![Stripe Checkout](screenshots/complete-checkout.png)
+
+Purpose: shows the hosted Stripe payment page used for secure card processing. This fulfills the requirement for live-style billing workflow where patients or public users can proceed from CityCare checkout into Stripe card payment.
+
+### Contact Page
+
+![Contact Page](screenshots/contactus.png)
+
+Purpose: provides a public inquiry and appointment-booking form. Visitors can submit names, phone numbers, request types, preferred appointment dates, and messages for clinic follow-up.
 
 ### Checkout Details
 
-Screenshot: `docs/screenshots/detailforcheckout.png`
+![Checkout Details](screenshots/detailforcheckout.png)
 
-Purpose: collects customer details and payment method selection. Users can choose Stripe card checkout, MTN Mobile Money, Airtel Money, or bank deposit reference submission.
+Purpose: captures patient details and payment route selection before checkout. Users can choose Visa card through Stripe, MTN Mobile Money, Airtel Money, or bank deposit so the system can route payment correctly.
 
-### Checkout Completion
+### Doctor Dashboard
 
-Screenshot: `docs/screenshots/complete-checkout.png`
+![Doctor Dashboard](screenshots/doctor.png)
 
-Purpose: confirms that checkout has been completed or submitted for cashier verification, depending on the selected payment method.
+Purpose: gives doctors a role-specific workspace for appointment schedules, patient access, consultation tracking, completed visits, and patient counts. It supports the doctor requirement to view patient history, notes, and treatment-related activity from one dashboard.
+
+### Services Page
+
+![Services Page](screenshots/services.png)
+
+Purpose: presents CityCare’s public services offering, including consultation-based care, diagnostics, 24/7 support, and ambulance coordination. It helps visitors move toward service selection, booking, or directions.
+
+### Location Page
+
+![Location Page](screenshots/location.png)
+
+Purpose: displays Plot 24 Yusuf Lule Road, Kampala and gives a working directions button so patients and visitors can open a route in Google Maps.
+
+### Patient Dashboard
+
+![Patient Dashboard](screenshots/patient.png)
+
+Purpose: gives patients their own role-specific portal where they can see their profile, appointments, visit activity, pending payments, paid invoices, reports, documents, care shop, and cart links.
+
+### Pharmacy Dashboard
+
+![Pharmacy Dashboard](screenshots/pharmacy.png)
+
+Purpose: shows the pharmacist-only workspace for handling prescriptions, managing drug inventory, reviewing drug categories, and monitoring low-stock items. This supports the pharmacy-only access rule and doctor-to-pharmacist prescription handoff.
+
+### Receptionist Dashboard
+
+![Receptionist Dashboard](screenshots/reception.png)
+
+Purpose: supports reception staff with patient lookup, appointment booking, appointment updates, and doctor availability checks while keeping revenue and cashier billing tasks outside reception access.
+
+### Reports Page
+
+![Reports Page](screenshots/report.png)
+
+Purpose: provides role-based reporting with date filters, report-type selection, and CSV export. The screenshot demonstrates that the reports page can generate work summaries according to the signed-in role.
+
+### Cart Review
+
+![Cart Review](screenshots/reviewcart.png)
+
+Purpose: allows the user to review selected clinic services, edit quantity, remove items, and confirm the total before continuing to checkout.
+
+### Administrator Dashboard
+
+![Administrator Dashboard](screenshots/administrator-dashboard.png)
+
+Purpose: gives the administrator a central monitoring workspace for appointments, active patients, doctor roster, pending payments, revenue-aware oversight, and operational shortcuts such as reports and documents.
 
 ## 7. Database Design Summary
 
@@ -322,6 +340,7 @@ Examples:
 - Pharmacists can access drug categories, drugs, and prescription queues.
 - Patients can view their own records and initiate online or mobile money payment references.
 - Patients can upload and view their own documents, while staff document access is limited by role and patient access rules.
+- Multiple roles can remain logged in within the same browser by using separate workspace session URLs such as `workspace/{workspace}/dashboard`.
 
 ## 9. Search, Filtering, Pagination, and API/AJAX
 
@@ -373,7 +392,7 @@ php artisan test
 Current result:
 
 ```text
-29 tests passed, 185 assertions.
+31 tests passed, 207 assertions.
 ```
 
 ## 14. Important URLs
@@ -393,6 +412,7 @@ Current result:
 - Patient login: `/login`
 - Staff login: `/staff/login`
 - Dashboard: `/dashboard`
+- Workspace dashboard: `/workspace/{workspace}/dashboard`
 - Patients: `/patients`
 - Doctors: `/doctors`
 - Departments: `/departments`

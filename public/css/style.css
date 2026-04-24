@@ -1325,6 +1325,14 @@ html[data-theme="dark"] .public-body {
     background: linear-gradient(180deg, #071018, #0b1520 55%);
 }
 
+html[data-theme="dark"] .public-band-soft {
+    background: linear-gradient(180deg, rgba(13, 22, 33, .96), rgba(8, 15, 24, .92));
+}
+
+html[data-theme="dark"] .public-band:not(.public-cta-band) {
+    color: var(--ink);
+}
+
 html[data-theme="dark"] .panel,
 html[data-theme="dark"] .metric-card,
 html[data-theme="dark"] .workspace-chip,
@@ -1370,6 +1378,10 @@ html[data-theme="dark"] .chart-bar-label,
 html[data-theme="dark"] .metric-note,
 html[data-theme="dark"] .auth-copy,
 html[data-theme="dark"] .auth-meta-card p,
+html[data-theme="dark"] .public-band:not(.public-cta-band) p,
+html[data-theme="dark"] .public-band:not(.public-cta-band) li,
+html[data-theme="dark"] .public-band:not(.public-cta-band) dt,
+html[data-theme="dark"] .public-band:not(.public-cta-band) dd,
 html[data-theme="dark"] .section-copy,
 html[data-theme="dark"] .media-card-body p,
 html[data-theme="dark"] .showcase-card-body p,
@@ -1494,6 +1506,13 @@ html[data-theme="dark"] .list-group-item-action:hover,
 html[data-theme="dark"] .list-group-item-action:focus {
     background: rgba(255, 255, 255, .05);
     color: #fff !important;
+}
+
+html[data-theme="dark"] .public-band .eyebrow,
+html[data-theme="dark"] .public-stat-label,
+html[data-theme="dark"] .media-card .eyebrow,
+html[data-theme="dark"] .showcase-card .eyebrow {
+    color: #5fb9c7;
 }
 
 html[data-theme="dark"] .progress {
