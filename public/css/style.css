@@ -1543,6 +1543,12 @@ html[data-theme="dark"] .page-item.disabled .page-link {
     color: #7f8b9d;
 }
 
+html[data-theme="dark"] .price-chip {
+    background: rgba(21, 109, 122, .16);
+    border: 1px solid rgba(95, 185, 199, .22);
+    color: #8ad8e3 !important;
+}
+
 html[data-theme="dark"] .alert-success {
     background: rgba(36, 155, 97, .12);
     border-color: rgba(36, 155, 97, .32);
