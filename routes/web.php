@@ -166,5 +166,21 @@ Route::middleware('workspace.auth')->group($registerProtectedRoutes);
 Route::prefix('workspace/{workspace}')
     ->where(['workspace' => '[A-Za-z0-9\-]+'])
     ->as('workspace.')
+    ->middleware(['workspace.auth', 'role:patient'])
+    ->group(function (): void {
+        Route::get('/shop', [CartController::class, 'shop'])->name('shop.index');
+        Route::post('/shop/cart/{product}', [CartController::class, 'workspaceAdd'])->name('cart.add');
+        Route::get('/cart', [CartController::class, 'cart'])->name('cart.index');
+        Route::patch('/cart/{product}', [CartController::class, 'workspaceUpdate'])->name('cart.update');
+        Route::delete('/cart/{product}', [CartController::class, 'workspaceRemove'])->name('cart.remove');
+        Route::get('/checkout', [CartController::class, 'checkout'])->name('shop.checkout');
+        Route::post('/checkout', [CartController::class, 'processCheckout'])->name('shop.checkout.store');
+        Route::get('/checkout/{payment}/success', [CartController::class, 'workspaceSuccess'])->name('shop.checkout.success');
+        Route::get('/checkout/{payment}/cancel', [CartController::class, 'workspaceCancel'])->name('shop.checkout.cancel');
+    });
+
+Route::prefix('workspace/{workspace}')
+    ->where(['workspace' => '[A-Za-z0-9\-]+'])
+    ->as('workspace.')
     ->middleware('workspace.auth')
     ->group($registerProtectedRoutes);

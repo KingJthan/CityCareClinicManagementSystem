@@ -4,7 +4,11 @@ namespace Tests\Feature;
 
 use App\Models\BillingProduct;
 use App\Models\Payment;
+use App\Models\Patient;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Testing\TestResponse;
 use Tests\TestCase;
 
 class CheckoutCartTest extends TestCase
@@ -84,5 +88,68 @@ class CheckoutCartTest extends TestCase
             ->assertSessionHas('error');
 
         $this->assertDatabaseCount('payments', 0);
+    }
+
+    public function test_patient_can_use_care_shop_inside_workspace_portal(): void
+    {
+        $product = BillingProduct::create([
+            'code' => 'TEST-WORK',
+            'name' => 'Workspace consultation',
+            'category' => 'Consultation',
+            'description' => 'A workspace care service.',
+            'price' => 70000,
+            'status' => 'active',
+        ]);
+
+        $user = User::factory()->create([
+            'name' => 'Patient Portal User',
+            'email' => 'patient@citycare.test',
+            'password' => Hash::make('citycare456'),
+            'role' => 'patient',
+            'status' => 'active',
+            'email_verified_at' => now(),
+        ]);
+
+        Patient::create([
+            'user_id' => $user->id,
+            'patient_number' => 'P-0001',
+            'first_name' => 'Patient',
+            'last_name' => 'Portal',
+            'email' => $user->email,
+            'phone' => '+256700555222',
+            'status' => 'active',
+        ]);
+
+        $workspace = $this->workspaceFromRedirect($this->post(route('login.store', [], false), [
+            'email' => 'patient@citycare.test',
+            'password' => 'citycare456',
+            'expected_role' => 'patient',
+        ]));
+
+        $this->get(route('workspace.shop.index', ['workspace' => $workspace], false))
+            ->assertOk()
+            ->assertSee('Select services and check out securely');
+
+        $this->post(route('workspace.cart.add', ['workspace' => $workspace, 'product' => $product], false), [
+            'quantity' => 1,
+        ])
+            ->assertRedirect(route('workspace.cart.index', ['workspace' => $workspace], false))
+            ->assertSessionHas("care_cart.{$product->id}", 1);
+
+        $this->get(route('workspace.cart.index', ['workspace' => $workspace], false))
+            ->assertOk()
+            ->assertSee('Workspace consultation')
+            ->assertSee('70,000');
+    }
+
+    private function workspaceFromRedirect(TestResponse $response): string
+    {
+        $response->assertRedirect();
+
+        $path = parse_url($response->headers->get('Location'), PHP_URL_PATH) ?: '';
+
+        $this->assertMatchesRegularExpression('#^/workspace/[A-Za-z0-9\-]+/dashboard$#', $path);
+
+        return explode('/', trim($path, '/'))[1];
     }
 }

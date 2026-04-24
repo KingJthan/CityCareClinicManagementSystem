@@ -59,7 +59,7 @@
                             <dt>Reference</dt>
                             <dd>{{ $payment->reference ?? 'Not recorded' }}</dd>
                         </dl>
-                        <a class="btn btn-dark w-100" href="{{ route('shop.index') }}">View more services</a>
+                        <a class="btn btn-dark w-100" href="{{ workspace_route('shop.index') }}">View more services</a>
                     </aside>
                 </div>
             </div>

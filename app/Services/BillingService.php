@@ -255,7 +255,13 @@ class BillingService
         return $checkout;
     }
 
-    public function createCartStripeCheckout(Payment $payment, Collection $items, array $customer): Checkout
+    public function createCartStripeCheckout(
+        Payment $payment,
+        Collection $items,
+        array $customer,
+        string $successUrl,
+        string $cancelUrl
+    ): Checkout
     {
         $metadata = [
             'payment_id' => (string) $payment->id,
@@ -276,8 +282,8 @@ class BillingService
         ])->values()->all();
 
         $checkout = Checkout::guest()->create($lineItems, [
-            'success_url' => route('shop.checkout.success', $payment) . '?session_id={CHECKOUT_SESSION_ID}',
-            'cancel_url' => route('shop.checkout.cancel', $payment),
+            'success_url' => $successUrl,
+            'cancel_url' => $cancelUrl,
             'customer_email' => $customer['customer_email'],
             'metadata' => $metadata,
             'payment_intent_data' => [

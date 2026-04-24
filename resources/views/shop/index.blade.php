@@ -14,7 +14,7 @@
                     </p>
                 </div>
                 <div class="col-lg-5 text-lg-end">
-                    <a class="btn btn-dark btn-lg" href="{{ route('cart.index') }}">
+                    <a class="btn btn-dark btn-lg" href="{{ workspace_route('cart.index') }}">
                         View cart
                         @if($cartCount > 0)
                             <span class="badge text-bg-light ms-1">{{ $cartCount }}</span>
@@ -41,7 +41,7 @@
                                     <span class="price-chip">UGX {{ number_format($product->price) }}</span>
                                 </div>
                                 <p>{{ $product->description }}</p>
-                                <form method="POST" action="{{ route('cart.add', $product) }}" class="mt-auto">
+                                <form method="POST" action="{{ workspace_route('cart.add', $product) }}" class="mt-auto">
                                     @csrf
                                     <div class="d-flex gap-2">
                                         <input class="form-control quantity-input" type="number" min="1" max="10" name="quantity" value="1" aria-label="Quantity">

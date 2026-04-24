@@ -19,6 +19,8 @@
                 @endif
                 @if(auth()->user()->hasRole('patient'))
                     <a class="btn btn-dark" href="{{ workspace_route('patients.profile') }}">My profile</a>
+                    <a class="btn btn-outline-secondary" href="{{ workspace_route('shop.index') }}">Care shop</a>
+                    <a class="btn btn-outline-secondary" href="{{ workspace_route('cart.index') }}">Cart</a>
                 @endif
                 <a class="btn btn-outline-secondary" href="{{ workspace_route('reports.index') }}">Reports</a>
                 <a class="btn btn-outline-secondary" href="{{ workspace_route('documents.index') }}">Documents</a>

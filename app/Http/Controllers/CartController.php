@@ -41,7 +41,12 @@ class CartController extends Controller
 
         $request->session()->put(self::CART_KEY, $cart);
 
-        return redirect()->route('cart.index')->with('success', $product->name . ' added to your cart.');
+        return redirect()->to(workspace_route('cart.index'))->with('success', $product->name . ' added to your cart.');
+    }
+
+    public function workspaceAdd(Request $request, string $workspace, BillingProduct $product): RedirectResponse
+    {
+        return $this->add($request, $product);
     }
 
     public function cart(Request $request)
@@ -73,6 +78,11 @@ class CartController extends Controller
         return back()->with('success', 'Cart updated.');
     }
 
+    public function workspaceUpdate(Request $request, string $workspace, BillingProduct $product): RedirectResponse
+    {
+        return $this->update($request, $product);
+    }
+
     public function remove(Request $request, BillingProduct $product): RedirectResponse
     {
         $cart = $this->cartContents($request);
@@ -82,12 +92,17 @@ class CartController extends Controller
         return back()->with('success', $product->name . ' removed from your cart.');
     }
 
+    public function workspaceRemove(Request $request, string $workspace, BillingProduct $product): RedirectResponse
+    {
+        return $this->remove($request, $product);
+    }
+
     public function checkout(Request $request)
     {
         $items = $this->billing->cartItems($this->cartContents($request));
 
         if ($items->isEmpty()) {
-            return redirect()->route('shop.index')->with('error', 'Choose at least one service before checkout.');
+            return redirect()->to(workspace_route('shop.index'))->with('error', 'Choose at least one service before checkout.');
         }
 
         $user = $request->user();
@@ -108,7 +123,7 @@ class CartController extends Controller
         $items = $this->billing->cartItems($this->cartContents($request));
 
         if ($items->isEmpty()) {
-            return redirect()->route('shop.index')->with('error', 'Choose at least one service before checkout.');
+            return redirect()->to(workspace_route('shop.index'))->with('error', 'Choose at least one service before checkout.');
         }
 
         $data = $request->validate([
@@ -135,7 +150,13 @@ class CartController extends Controller
 
         if ($data['payment_method'] === 'Stripe Checkout') {
             try {
-                return $this->billing->createCartStripeCheckout($payment, $items, $data)->redirect();
+                return $this->billing->createCartStripeCheckout(
+                    $payment,
+                    $items,
+                    $data,
+                    workspace_route('shop.checkout.success', $payment) . '?session_id={CHECKOUT_SESSION_ID}',
+                    workspace_route('shop.checkout.cancel', $payment)
+                )->redirect();
             } catch (\Throwable $exception) {
                 report($exception);
 
@@ -149,7 +170,7 @@ class CartController extends Controller
         $request->session()->put('last_checkout_payment', $payment->id);
 
         return redirect()
-            ->route('shop.checkout.success', $payment)
+            ->to(workspace_route('shop.checkout.success', $payment))
             ->with('success', 'Checkout submitted. The cashier will verify your payment reference.');
     }
 
@@ -157,7 +178,7 @@ class CartController extends Controller
     {
         if ($request->filled('session_id')) {
             if (!$this->billing->stripeConfigured()) {
-                return redirect()->route('cart.index')->with('error', 'Stripe keys are not configured, so the checkout session cannot be verified.');
+                return redirect()->to(workspace_route('cart.index'))->with('error', 'Stripe keys are not configured, so the checkout session cannot be verified.');
             }
 
             try {
@@ -175,7 +196,7 @@ class CartController extends Controller
             } catch (\Throwable $exception) {
                 report($exception);
 
-                return redirect()->route('cart.index')->with('error', 'Stripe payment confirmation could not be verified.');
+                return redirect()->to(workspace_route('cart.index'))->with('error', 'Stripe payment confirmation could not be verified.');
             }
         }
 
@@ -184,11 +205,21 @@ class CartController extends Controller
         ]);
     }
 
+    public function workspaceSuccess(Request $request, string $workspace, Payment $payment)
+    {
+        return $this->success($request, $payment);
+    }
+
     public function cancel(Payment $payment): RedirectResponse
     {
         return redirect()
-            ->route('cart.index')
+            ->to(workspace_route('cart.index'))
             ->with('error', 'Stripe Checkout was cancelled. Your cart is still available if you want to try again.');
+    }
+
+    public function workspaceCancel(string $workspace, Payment $payment): RedirectResponse
+    {
+        return $this->cancel($payment);
     }
 
     private function cartContents(Request $request): array

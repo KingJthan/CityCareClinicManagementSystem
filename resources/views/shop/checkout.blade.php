@@ -20,7 +20,7 @@
 
     <section class="public-band">
         <div class="container-fluid px-3 px-lg-4">
-            <form method="POST" action="{{ route('shop.checkout.store') }}" class="row g-4">
+            <form method="POST" action="{{ workspace_route('shop.checkout.store') }}" class="row g-4">
                 @csrf
                 <div class="col-lg-7">
                     <div class="panel panel-pad mb-3">
@@ -101,7 +101,7 @@
                             <strong>UGX {{ number_format($total) }}</strong>
                         </div>
                         <button class="btn btn-dark btn-lg w-100" type="submit">Complete checkout</button>
-                        <a class="btn btn-outline-secondary w-100 mt-2" href="{{ route('cart.index') }}">Back to cart</a>
+                        <a class="btn btn-outline-secondary w-100 mt-2" href="{{ workspace_route('cart.index') }}">Back to cart</a>
                     </aside>
                 </div>
             </form>

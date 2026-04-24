@@ -32,14 +32,14 @@
         ] : null,
         $user->hasRole('patient') ? [
             'label' => 'Care Shop',
-            'route' => route('shop.index'),
-            'match' => ['shop.*'],
+            'route' => workspace_route('shop.index'),
+            'match' => ['shop.*', 'workspace.shop.*'],
             'icon' => 'CS',
         ] : null,
         $user->hasRole('patient') ? [
             'label' => 'Cart',
-            'route' => route('cart.index'),
-            'match' => ['cart.*'],
+            'route' => workspace_route('cart.index'),
+            'match' => ['cart.*', 'workspace.cart.*'],
             'icon' => 'CT',
         ] : null,
         $user->hasRole(['admin', 'receptionist', 'doctor', 'rn', 'pct', 'nurse']) ? [
