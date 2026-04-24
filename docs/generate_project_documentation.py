@@ -27,7 +27,7 @@ from reportlab.platypus import (
 
 ROOT = Path(__file__).resolve().parent
 SOURCE = ROOT / "project-documentation.md"
-OUTPUT = ROOT / "CityCare_Project_Documentation.pdf"
+OUTPUT = ROOT / "CityCare_Project_Documentation_Updated.pdf"
 
 
 def build_styles() -> StyleSheet1:

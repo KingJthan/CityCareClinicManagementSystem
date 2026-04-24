@@ -246,7 +246,7 @@ Purpose: gives doctors a role-specific workspace for appointment schedules, pati
 
 ![Services Page](screenshots/services.png)
 
-Purpose: presents CityCare’s public services offering, including consultation-based care, diagnostics, 24/7 support, and ambulance coordination. It helps visitors move toward service selection, booking, or directions.
+Purpose: presents CityCare's public services offering, including consultation-based care, diagnostics, 24/7 support, and ambulance coordination. It helps visitors move toward service selection, booking, or directions.
 
 ### Location Page
 

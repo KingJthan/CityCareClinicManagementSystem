@@ -10,7 +10,8 @@ This README is written to satisfy the project documentation requirement in the m
 - Major features are explained in the **Features** section.
 - Brief descriptions of the screens and system modules are provided in the **System Modules** and **Screen Descriptions** sections.
 - Demo accounts, important URLs, and verification commands are included for quick examiner testing.
-- The formal documentation PDF is available at `docs/CityCare_Project_Documentation.pdf`.
+- The final formal documentation PDF is available at `docs/CityCare_Project_Documentation_Updated.pdf`.
+- The editable documentation source is `docs/project-documentation.md`, and the PDF generator script is `docs/generate_project_documentation.py`.
 
 ## Technologies Used
 
