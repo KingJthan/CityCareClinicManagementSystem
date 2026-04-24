@@ -59,7 +59,7 @@ class PrescriptionController extends Controller
             'status' => 'pending',
         ]);
 
-        return redirect()->route('appointments.show', $appointment)->with('success', 'Prescription sent to pharmacy.');
+        return redirect()->to(workspace_route('appointments.show', $appointment))->with('success', 'Prescription sent to pharmacy.');
     }
 
     public function show(Prescription $prescription)
@@ -92,7 +92,7 @@ class PrescriptionController extends Controller
 
         $prescription->update($payload);
 
-        return redirect()->route('prescriptions.index')->with('success', 'Prescription queue updated.');
+        return redirect()->to(workspace_route('prescriptions.index'))->with('success', 'Prescription queue updated.');
     }
 
     private function ensureDoctorCanPrescribe(Request $request, Appointment $appointment): void

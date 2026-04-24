@@ -6,8 +6,8 @@
     <x-page-header :title="$doctor->display_name" subtitle="Doctor schedule, profile, and upcoming appointments.">
         <x-slot:actions>
             @if(auth()->user()->hasRole('admin'))
-                <a class="btn btn-outline-secondary" href="{{ route('doctors.edit', $doctor) }}">Edit</a>
-                <form method="POST" action="{{ route('doctors.destroy', $doctor) }}" data-confirm="Archive this doctor profile?">
+                <a class="btn btn-outline-secondary" href="{{ workspace_route('doctors.edit', $doctor) }}">Edit</a>
+                <form method="POST" action="{{ workspace_route('doctors.destroy', $doctor) }}" data-confirm="Archive this doctor profile?">
                     @csrf
                     @method('DELETE')
                     <button class="btn btn-outline-danger" type="submit">Archive</button>

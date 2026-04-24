@@ -38,7 +38,7 @@ class ConsultationController extends Controller
 
         $appointment->update(['status' => 'completed']);
 
-        return redirect()->route('appointments.show', $appointment)->with('success', 'Consultation notes saved.');
+        return redirect()->to(workspace_route('appointments.show', $appointment))->with('success', 'Consultation notes saved.');
     }
 
     private function ensureDoctorCanManage(Request $request, Appointment $appointment): void

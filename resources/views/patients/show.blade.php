@@ -12,18 +12,18 @@
     <x-page-header :title="$patient->full_name" :subtitle="$patient->patient_number . ' patient profile'">
         <x-slot:actions>
             @if(auth()->user()->hasRole('admin'))
-                <a class="btn btn-outline-secondary" href="{{ route('patients.edit', $patient) }}">Edit</a>
-                <form method="POST" action="{{ route('patients.destroy', $patient) }}" data-confirm="Archive this patient record?">
+                <a class="btn btn-outline-secondary" href="{{ workspace_route('patients.edit', $patient) }}">Edit</a>
+                <form method="POST" action="{{ workspace_route('patients.destroy', $patient) }}" data-confirm="Archive this patient record?">
                     @csrf
                     @method('DELETE')
                     <button class="btn btn-outline-danger" type="submit">Archive</button>
                 </form>
             @endif
             @if(auth()->user()->hasRole(['admin', 'receptionist']))
-                <a class="btn btn-dark" href="{{ route('appointments.create', ['patient_id' => $patient->id]) }}">Book appointment</a>
+                <a class="btn btn-dark" href="{{ workspace_route('appointments.create', ['patient_id' => $patient->id]) }}">Book appointment</a>
             @endif
             @if(auth()->user()->hasRole('patient'))
-                <a class="btn btn-dark" href="{{ route('appointments.create') }}">Request appointment</a>
+                <a class="btn btn-dark" href="{{ workspace_route('appointments.create') }}">Request appointment</a>
             @endif
         </x-slot:actions>
     </x-page-header>
@@ -75,7 +75,7 @@
                 <div class="panel-pad border-bottom"><h2 class="h5 mb-0">Appointments</h2></div>
                 <div class="list-group list-group-flush">
                 @forelse($appointments as $appointment)
-                        <a class="list-group-item list-group-item-action" href="{{ route('appointments.show', $appointment) }}">
+                        <a class="list-group-item list-group-item-action" href="{{ workspace_route('appointments.show', $appointment) }}">
                             <strong>{{ $appointment->appointment_date->format('M d, Y') }} {{ substr($appointment->start_time, 0, 5) }}</strong>
                             <div class="small text-muted">Provider: {{ $appointment->doctor->display_name }} - {{ ucfirst($appointment->status) }}</div>
                         </a>
@@ -110,7 +110,7 @@
                     <div class="panel-pad border-bottom"><h2 class="h5 mb-0">Bills and payments</h2></div>
                     <div class="list-group list-group-flush">
                         @forelse($payments as $payment)
-                            <a class="list-group-item list-group-item-action" href="{{ route('payments.show', $payment) }}">
+                            <a class="list-group-item list-group-item-action" href="{{ workspace_route('payments.show', $payment) }}">
                                 <strong>{{ $payment->invoice_number }}</strong>
                                 <div class="small text-muted">{{ number_format($payment->amount) }} - {{ ucfirst($payment->status) }}</div>
                             </a>

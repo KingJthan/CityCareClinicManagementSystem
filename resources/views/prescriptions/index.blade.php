@@ -5,7 +5,7 @@
 @section('content')
     <x-page-header title="Prescription Queue" subtitle="Doctor prescriptions sent to pharmacy for pharmacist review and dispensing.">
         <x-slot:actions>
-            <a class="btn btn-outline-secondary" href="{{ route('drugs.index') }}">Drug inventory</a>
+            <a class="btn btn-outline-secondary" href="{{ workspace_route('drugs.index') }}">Drug inventory</a>
         </x-slot:actions>
     </x-page-header>
 
@@ -37,8 +37,8 @@
                             <td>{{ $prescription->dosage }}<div class="small text-muted">{{ $prescription->frequency ?? 'No frequency' }}</div></td>
                             <td><x-status-pill :status="$prescription->status" /></td>
                             <td class="text-end">
-                                <a class="btn btn-sm btn-outline-secondary" href="{{ route('prescriptions.show', $prescription) }}">View</a>
-                                <a class="btn btn-sm btn-dark" href="{{ route('prescriptions.edit', $prescription) }}">Process</a>
+                                <a class="btn btn-sm btn-outline-secondary" href="{{ workspace_route('prescriptions.show', $prescription) }}">View</a>
+                                <a class="btn btn-sm btn-dark" href="{{ workspace_route('prescriptions.edit', $prescription) }}">Process</a>
                             </td>
                         </tr>
                     @empty

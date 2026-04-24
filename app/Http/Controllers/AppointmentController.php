@@ -72,7 +72,7 @@ class AppointmentController extends Controller
             ? 'Appointment request submitted. The clinic will approve the selected available slot.'
             : 'Appointment booked successfully.';
 
-        return redirect()->route('appointments.index')->with('success', $message);
+        return redirect()->to(workspace_route('appointments.index'))->with('success', $message);
     }
 
     public function show(Request $request, Appointment $appointment)
@@ -112,7 +112,7 @@ class AppointmentController extends Controller
             'end_time' => $this->slotService->endTimeFor($doctor, $data['start_time']),
         ]);
 
-        return redirect()->route('appointments.show', $appointment)->with('success', 'Appointment updated.');
+        return redirect()->to(workspace_route('appointments.show', $appointment))->with('success', 'Appointment updated.');
     }
 
     public function destroy(Request $request, Appointment $appointment)
@@ -120,7 +120,7 @@ class AppointmentController extends Controller
         $this->ensureCanView($request, $appointment);
         $appointment->delete();
 
-        return redirect()->route('appointments.index')->with('success', 'Appointment archived.');
+        return redirect()->to(workspace_route('appointments.index'))->with('success', 'Appointment archived.');
     }
 
     private function formData(Appointment $appointment, Request $request): array

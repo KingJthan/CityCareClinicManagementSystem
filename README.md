@@ -1,6 +1,6 @@
 # CityCare Clinic Appointment and Patient Management System
 
-CityCare is a Laravel 12 clinic management system built for the project-based exam brief. It centralizes patient registration, email verification, OTP login, doctor scheduling, appointment booking, consultation notes, pharmacy, radiology, cashier payments, role-based access, search/filtering, pagination, and CSV reporting.
+CityCare is a Laravel 12 clinic management system built for the project-based exam brief. It centralizes patient registration, email verification, OTP login, doctor scheduling, appointment booking, consultation notes, pharmacy, radiology, cashier payments, secure document uploads, dark-mode capable dashboards, public feature pages, search/filtering, pagination, and CSV reporting.
 
 ## Documentation Checklist
 
@@ -10,6 +10,7 @@ This README is written to satisfy the project documentation requirement in the m
 - Major features are explained in the **Features** section.
 - Brief descriptions of the screens and system modules are provided in the **System Modules** and **Screen Descriptions** sections.
 - Demo accounts, important URLs, and verification commands are included for quick examiner testing.
+- The formal documentation PDF is available at `docs/CityCare_Project_Documentation.pdf`.
 
 ## Technologies Used
 
@@ -44,12 +45,15 @@ This README is written to satisfy the project documentation requirement in the m
 - Public care service catalog with cart checkout, payment line items, Stripe-hosted Visa/card checkout, and cashier verification for MTN, Airtel, and bank references.
 - Laravel Cashier and Stripe Checkout integration for live patient card and Stripe-supported online payments.
 - Public home page with separate patient access, visible staff portal access, services, location, and contact inquiry form.
+- Dedicated public feature pages for role-based access, live doctor slot checks, 24/7 services, and ambulance support, linked directly from the home page.
 - Patient appointment requests that use live doctor availability and await clinic approval.
 - Patient check-in links and QR codes that open 30 minutes before appointment time.
 - Patient insurance, blood work/lab results, vital signs, prescriptions, family history, and treatment history views.
 - Secure document uploads for patient IDs, insurance cards, clinical files, payment proof, pharmacy files, radiology reports, and role-specific staff documents.
 - Patient portal for profile, appointments, visit history, and payment status.
 - Reports for appointments, payments, and visits with CSV export.
+- Light and dark display mode across public pages, authentication screens, and workspaces.
+- Auto-dismissing flash messages for success and error notifications after create, update, delete, login, and logout actions.
 - Search, filtering, pagination, soft deletes, and responsive Bootstrap UI.
 
 ## System Modules
@@ -72,11 +76,12 @@ This README is written to satisfy the project documentation requirement in the m
 These descriptions can be used in place of screenshots when submitting the project documentation:
 
 - Public home screen: presents CityCare Medical Centre, patient login, patient sign up, staff access, 24/7 service messaging, ambulance support, and quick links to services, location, contact, and the care shop.
+- Public feature detail pages: explain role-based access, doctor slot checks, 24/7 services, and ambulance support from dedicated public information screens linked from the homepage.
 - Services screen: explains clinic services, appointment support, diagnostics, pharmacy, emergency response, and directs users to book inquiries or choose paid care services.
 - Location screen: shows Plot 24 Yusuf Lule Road, Kampala and provides a working Google Maps directions link.
 - Contact screen: provides clinic contact details and a form for appointment booking or general inquiries.
 - Authentication screens: separate patient and staff login flows, patient registration, email verification, OTP verification for normal users, and password change for authenticated users.
-- Administrator dashboard: displays operational metrics, appointment performance charts, payment method summaries, doctor workload, attendance trends, and links to core management modules.
+- Administrator dashboard: displays operational metrics, appointment performance charts, payment method summaries, doctor workload, attendance trends, links to core management modules, and the administrator portrait in the workspace profile areas.
 - Receptionist workspace: supports patient search and appointment booking, editing, and cancellation while loading available doctor slots dynamically.
 - Doctor workspace: shows the doctor's schedule, patient records, previous visits, consultation notes, prescriptions, radiology orders, and treatment plans.
 - Cashier workspace: records and tracks payments, invoice status, payment methods, receipt references, Stripe checkout status, and payment reports.
@@ -233,6 +238,10 @@ If every role login returns a 500 error on Cloud, first check that migrations ha
 - Care cart and checkout: `/cart`, `/checkout`
 - Location and directions for Plot 24 Yusuf Lule Road, Kampala: `/location`
 - Contact and public appointment inquiry form: `/contact-us`
+- Role-based access feature page: `/features/role-based-access`
+- Live doctor slot checks feature page: `/features/live-doctor-slot-checks`
+- 24/7 services feature page: `/features/24-7-services`
+- Ambulance support feature page: `/features/ambulance-support`
 - Patient login: `/login`
 - Staff login: `/staff/login`
 - Dashboard: `/dashboard`
@@ -256,6 +265,12 @@ The included test suite covers public pages, patient registration, role checking
 
 ```bash
 php artisan test
+```
+
+Latest local verification result:
+
+```text
+29 tests passed, 185 assertions.
 ```
 
 ## Author

@@ -6,7 +6,7 @@
     <x-page-header :title="'Update ' . $order->study_type" :subtitle="$order->patient->full_name . ' - ' . $order->doctor->display_name" />
 
     <div class="panel panel-pad">
-        <form method="POST" action="{{ route('radiology-orders.update', $order) }}" class="row g-3">
+        <form method="POST" action="{{ workspace_route('radiology-orders.update', $order) }}" class="row g-3">
             @csrf
             @method('PUT')
             <div class="col-md-4">
@@ -23,7 +23,7 @@
             </div>
             <div class="col-12 d-flex gap-2">
                 <button class="btn btn-dark" type="submit">Save radiology update</button>
-                <a class="btn btn-outline-secondary" href="{{ route('radiology-orders.index') }}">Cancel</a>
+                <a class="btn btn-outline-secondary" href="{{ workspace_route('radiology-orders.index') }}">Cancel</a>
             </div>
         </form>
     </div>

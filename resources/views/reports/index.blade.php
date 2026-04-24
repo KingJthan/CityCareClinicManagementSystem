@@ -5,7 +5,7 @@
 @section('content')
     <x-page-header title="Reports" subtitle="Generate role-based summaries for the work assigned to your account.">
         <x-slot:actions>
-            <a class="btn btn-dark" href="{{ route('reports.export', request()->query()) }}">Export CSV</a>
+            <a class="btn btn-dark" href="{{ workspace_route('reports.export', request()->query()) }}">Export CSV</a>
         </x-slot:actions>
     </x-page-header>
 

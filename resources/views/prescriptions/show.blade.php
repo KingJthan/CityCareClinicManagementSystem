@@ -5,7 +5,7 @@
 @section('content')
     <x-page-header :title="$prescription->patient->full_name . ' Prescription'" :subtitle="$prescription->drug->name . ' ' . $prescription->drug->strength">
         <x-slot:actions>
-            <a class="btn btn-dark" href="{{ route('prescriptions.edit', $prescription) }}">Process</a>
+            <a class="btn btn-dark" href="{{ workspace_route('prescriptions.edit', $prescription) }}">Process</a>
         </x-slot:actions>
     </x-page-header>
 

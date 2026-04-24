@@ -7,7 +7,7 @@
     <x-page-header :title="$editing ? 'Edit Department' : 'New Department'" subtitle="Keep clinic department records clear and searchable." />
 
     <div class="panel panel-pad">
-        <form method="POST" action="{{ $editing ? route('departments.update', $department) : route('departments.store') }}" class="row g-3">
+        <form method="POST" action="{{ $editing ? workspace_route('departments.update', $department) : workspace_route('departments.store') }}" class="row g-3">
             @csrf
             @if($editing)
                 @method('PUT')
@@ -39,7 +39,7 @@
             </div>
             <div class="col-12 d-flex gap-2">
                 <button class="btn btn-dark" type="submit">{{ $editing ? 'Save changes' : 'Create department' }}</button>
-                <a class="btn btn-outline-secondary" href="{{ route('departments.index') }}">Cancel</a>
+                <a class="btn btn-outline-secondary" href="{{ workspace_route('departments.index') }}">Cancel</a>
             </div>
         </form>
     </div>

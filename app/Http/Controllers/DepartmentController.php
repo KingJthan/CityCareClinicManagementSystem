@@ -36,7 +36,7 @@ class DepartmentController extends Controller
     {
         Department::create($this->validated($request));
 
-        return redirect()->route('departments.index')->with('success', 'Department created.');
+        return redirect()->to(workspace_route('departments.index'))->with('success', 'Department created.');
     }
 
     public function show(Department $department)
@@ -55,14 +55,14 @@ class DepartmentController extends Controller
     {
         $department->update($this->validated($request, $department));
 
-        return redirect()->route('departments.show', $department)->with('success', 'Department updated.');
+        return redirect()->to(workspace_route('departments.show', $department))->with('success', 'Department updated.');
     }
 
     public function destroy(Department $department)
     {
         $department->delete();
 
-        return redirect()->route('departments.index')->with('success', 'Department archived.');
+        return redirect()->to(workspace_route('departments.index'))->with('success', 'Department archived.');
     }
 
     private function validated(Request $request, ?Department $department = null): array

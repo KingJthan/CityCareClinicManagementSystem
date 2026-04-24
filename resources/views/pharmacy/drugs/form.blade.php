@@ -7,7 +7,7 @@
     <x-page-header :title="$editing ? 'Edit Drug' : 'New Drug'" subtitle="Drug name, strength, and dosage form cannot be duplicated." />
 
     <div class="panel panel-pad">
-        <form method="POST" action="{{ $editing ? route('drugs.update', $drug) : route('drugs.store') }}" class="row g-3">
+        <form method="POST" action="{{ $editing ? workspace_route('drugs.update', $drug) : workspace_route('drugs.store') }}" class="row g-3">
             @csrf
             @if($editing)
                 @method('PUT')
@@ -60,7 +60,7 @@
             </div>
             <div class="col-12 d-flex gap-2">
                 <button class="btn btn-dark" type="submit">Save drug</button>
-                <a class="btn btn-outline-secondary" href="{{ route('drugs.index') }}">Cancel</a>
+                <a class="btn btn-outline-secondary" href="{{ workspace_route('drugs.index') }}">Cancel</a>
             </div>
         </form>
     </div>

@@ -5,7 +5,7 @@
 
 <div class="panel panel-pad h-100">
     <h2 class="h5 mb-3">Upload document</h2>
-    <form method="POST" action="{{ route('documents.store') }}" enctype="multipart/form-data" class="row g-3">
+    <form method="POST" action="{{ workspace_route('documents.store') }}" enctype="multipart/form-data" class="row g-3">
         @csrf
 
         @if($fixedPatient)

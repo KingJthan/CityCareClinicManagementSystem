@@ -46,8 +46,8 @@
                             <td>{{ ucfirst($order->priority) }}</td>
                             <td><x-status-pill :status="$order->status" /></td>
                             <td class="text-end">
-                                <a class="btn btn-sm btn-outline-secondary" href="{{ route('radiology-orders.show', $order) }}">View</a>
-                                <a class="btn btn-sm btn-dark" href="{{ route('radiology-orders.edit', $order) }}">Update</a>
+                                <a class="btn btn-sm btn-outline-secondary" href="{{ workspace_route('radiology-orders.show', $order) }}">View</a>
+                                <a class="btn btn-sm btn-dark" href="{{ workspace_route('radiology-orders.edit', $order) }}">Update</a>
                             </td>
                         </tr>
                     @empty

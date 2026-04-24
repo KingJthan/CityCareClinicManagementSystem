@@ -7,7 +7,7 @@
     <x-page-header :title="$editing ? 'Edit Patient' : 'New Patient'" subtitle="Capture patient identity, emergency contact, and login access details." />
 
     <div class="panel panel-pad">
-        <form method="POST" action="{{ $editing ? route('patients.update', $patient) : route('patients.store') }}" class="row g-3">
+        <form method="POST" action="{{ $editing ? workspace_route('patients.update', $patient) : workspace_route('patients.store') }}" class="row g-3">
             @csrf
             @if($editing)
                 @method('PUT')
@@ -88,7 +88,7 @@
 
             <div class="col-12 d-flex gap-2">
                 <button class="btn btn-dark" type="submit">{{ $editing ? 'Save changes' : 'Create patient' }}</button>
-                <a class="btn btn-outline-secondary" href="{{ route('patients.index') }}">Cancel</a>
+                <a class="btn btn-outline-secondary" href="{{ workspace_route('patients.index') }}">Cancel</a>
             </div>
         </form>
     </div>

@@ -11,7 +11,7 @@
     <x-page-header :title="$editing ? 'Edit Doctor' : 'New Doctor'" subtitle="Create staff login details and clinical schedule settings." />
 
     <div class="panel panel-pad">
-        <form method="POST" action="{{ $editing ? route('doctors.update', $doctor) : route('doctors.store') }}" class="row g-3">
+        <form method="POST" action="{{ $editing ? workspace_route('doctors.update', $doctor) : workspace_route('doctors.store') }}" class="row g-3">
             @csrf
             @if($editing)
                 @method('PUT')
@@ -113,7 +113,7 @@
 
             <div class="col-12 d-flex gap-2">
                 <button class="btn btn-dark" type="submit">{{ $editing ? 'Save changes' : 'Create doctor' }}</button>
-                <a class="btn btn-outline-secondary" href="{{ route('doctors.index') }}">Cancel</a>
+                <a class="btn btn-outline-secondary" href="{{ workspace_route('doctors.index') }}">Cancel</a>
             </div>
         </form>
     </div>

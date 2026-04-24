@@ -71,7 +71,7 @@ class PatientController extends Controller
             ]);
         });
 
-        return redirect()->route('patients.index')->with('success', 'Patient record created.');
+        return redirect()->to(workspace_route('patients.index'))->with('success', 'Patient record created.');
     }
 
     public function show(Patient $patient)
@@ -113,14 +113,14 @@ class PatientController extends Controller
             'status' => $data['status'],
         ]);
 
-        return redirect()->route('patients.show', $patient)->with('success', 'Patient record updated.');
+        return redirect()->to(workspace_route('patients.show', $patient))->with('success', 'Patient record updated.');
     }
 
     public function destroy(Patient $patient)
     {
         $patient->delete();
 
-        return redirect()->route('patients.index')->with('success', 'Patient record archived.');
+        return redirect()->to(workspace_route('patients.index'))->with('success', 'Patient record archived.');
     }
 
     public function profile(Request $request)

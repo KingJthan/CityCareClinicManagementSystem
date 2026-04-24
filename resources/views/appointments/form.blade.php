@@ -28,7 +28,7 @@
     </div>
 
     <div class="panel panel-pad">
-        <form method="POST" action="{{ $editing ? route('appointments.update', $appointment) : route('appointments.store') }}" class="row g-3">
+        <form method="POST" action="{{ $editing ? workspace_route('appointments.update', $appointment) : workspace_route('appointments.store') }}" class="row g-3">
             @csrf
             @if($editing)
                 @method('PUT')
@@ -107,7 +107,7 @@
 
             <div class="col-12 d-flex gap-2">
                 <button class="btn btn-dark" type="submit">{{ $editing ? 'Save changes' : ($isPatientPortal ? 'Request approval' : 'Book appointment') }}</button>
-                <a class="btn btn-outline-secondary" href="{{ route('appointments.index') }}">Cancel</a>
+                <a class="btn btn-outline-secondary" href="{{ workspace_route('appointments.index') }}">Cancel</a>
             </div>
         </form>
     </div>

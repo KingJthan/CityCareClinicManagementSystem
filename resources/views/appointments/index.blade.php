@@ -6,7 +6,7 @@
     <x-page-header title="Appointments" subtitle="Book, update, cancel, and review patient appointments.">
         <x-slot:actions>
             @if(auth()->user()->hasRole(['admin', 'receptionist', 'patient']))
-                <a class="btn btn-dark" href="{{ route('appointments.create') }}">Book appointment</a>
+                <a class="btn btn-dark" href="{{ workspace_route('appointments.create') }}">Book appointment</a>
             @endif
         </x-slot:actions>
     </x-page-header>
@@ -58,7 +58,7 @@
                             <td>{{ $appointment->department->name }}</td>
                             <td><x-status-pill :status="$appointment->status" /></td>
                             <td>{{ $appointment->payment?->status ? ucfirst($appointment->payment->status) : 'No invoice' }}</td>
-                            <td class="text-end"><a class="btn btn-sm btn-outline-secondary" href="{{ route('appointments.show', $appointment) }}">View</a></td>
+                            <td class="text-end"><a class="btn btn-sm btn-outline-secondary" href="{{ workspace_route('appointments.show', $appointment) }}">View</a></td>
                         </tr>
                     @empty
                         <tr><td colspan="7" class="text-center text-muted py-4">No appointments found.</td></tr>

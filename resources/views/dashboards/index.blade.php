@@ -12,16 +12,16 @@
             </div>
             <div class="dashboard-hero-actions">
                 @if(auth()->user()->hasRole(['admin', 'receptionist']))
-                    <a class="btn btn-dark" href="{{ route('appointments.create') }}">Book appointment</a>
+                    <a class="btn btn-dark" href="{{ workspace_route('appointments.create') }}">Book appointment</a>
                 @endif
                 @if(auth()->user()->hasRole('cashier'))
-                    <a class="btn btn-dark" href="{{ route('payments.create') }}">Record payment</a>
+                    <a class="btn btn-dark" href="{{ workspace_route('payments.create') }}">Record payment</a>
                 @endif
                 @if(auth()->user()->hasRole('patient'))
-                    <a class="btn btn-dark" href="{{ route('patients.profile') }}">My profile</a>
+                    <a class="btn btn-dark" href="{{ workspace_route('patients.profile') }}">My profile</a>
                 @endif
-                <a class="btn btn-outline-secondary" href="{{ route('reports.index') }}">Reports</a>
-                <a class="btn btn-outline-secondary" href="{{ route('documents.index') }}">Documents</a>
+                <a class="btn btn-outline-secondary" href="{{ workspace_route('reports.index') }}">Reports</a>
+                <a class="btn btn-outline-secondary" href="{{ workspace_route('documents.index') }}">Documents</a>
             </div>
         </section>
 
@@ -134,7 +134,7 @@
                                     <td>{{ $appointment->patient->full_name }}</td>
                                     <td>{{ $appointment->doctor->display_name }}</td>
                                     <td><x-status-pill :status="$appointment->status" /></td>
-                                    <td><a class="btn btn-sm btn-outline-secondary" href="{{ route('appointments.show', $appointment) }}">View</a></td>
+                                    <td><a class="btn btn-sm btn-outline-secondary" href="{{ workspace_route('appointments.show', $appointment) }}">View</a></td>
                                 </tr>
                             @empty
                                 <tr><td colspan="5" class="text-muted text-center py-4">No upcoming appointments found.</td></tr>
@@ -157,7 +157,7 @@
                 @if($canSeePaymentSummary)
                     <div class="list-group list-group-flush">
                         @forelse($recentPayments as $payment)
-                            <a class="list-group-item list-group-item-action" href="{{ route('payments.show', $payment) }}">
+                            <a class="list-group-item list-group-item-action" href="{{ workspace_route('payments.show', $payment) }}">
                                 <div class="d-flex justify-content-between gap-2">
                                     <strong>{{ $payment->invoice_number }}</strong>
                                     <span>{{ number_format($payment->amount) }}</span>

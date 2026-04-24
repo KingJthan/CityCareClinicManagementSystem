@@ -6,7 +6,7 @@
     <x-page-header :title="'Process ' . $prescription->drug->name" :subtitle="$prescription->patient->full_name . ' - ' . $prescription->doctor->display_name" />
 
     <div class="panel panel-pad">
-        <form method="POST" action="{{ route('prescriptions.update', $prescription) }}" class="row g-3">
+        <form method="POST" action="{{ workspace_route('prescriptions.update', $prescription) }}" class="row g-3">
             @csrf
             @method('PUT')
             <div class="col-md-4">
@@ -23,7 +23,7 @@
             </div>
             <div class="col-12 d-flex gap-2">
                 <button class="btn btn-dark" type="submit">Save pharmacy update</button>
-                <a class="btn btn-outline-secondary" href="{{ route('prescriptions.index') }}">Cancel</a>
+                <a class="btn btn-outline-secondary" href="{{ workspace_route('prescriptions.index') }}">Cancel</a>
             </div>
         </form>
     </div>

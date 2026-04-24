@@ -6,7 +6,7 @@
     <x-page-header :title="'Prescribe for ' . $appointment->patient->full_name" :subtitle="$appointment->doctor->display_name . ' - Pharmacy request'" />
 
     <div class="panel panel-pad">
-        <form method="POST" action="{{ route('prescriptions.store', $appointment) }}" class="row g-3">
+        <form method="POST" action="{{ workspace_route('prescriptions.store', $appointment) }}" class="row g-3">
             @csrf
             <div class="col-md-6">
                 <label class="form-label" for="drug_id">Drug</label>
@@ -35,7 +35,7 @@
             </div>
             <div class="col-12 d-flex gap-2">
                 <button class="btn btn-dark" type="submit">Send to pharmacy</button>
-                <a class="btn btn-outline-secondary" href="{{ route('appointments.show', $appointment) }}">Cancel</a>
+                <a class="btn btn-outline-secondary" href="{{ workspace_route('appointments.show', $appointment) }}">Cancel</a>
             </div>
         </form>
     </div>

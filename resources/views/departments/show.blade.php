@@ -5,8 +5,8 @@
 @section('content')
     <x-page-header :title="$department->name" subtitle="Department profile and assigned doctor roster.">
         <x-slot:actions>
-            <a class="btn btn-outline-secondary" href="{{ route('departments.edit', $department) }}">Edit</a>
-            <form method="POST" action="{{ route('departments.destroy', $department) }}" data-confirm="Archive this department?">
+            <a class="btn btn-outline-secondary" href="{{ workspace_route('departments.edit', $department) }}">Edit</a>
+            <form method="POST" action="{{ workspace_route('departments.destroy', $department) }}" data-confirm="Archive this department?">
                 @csrf
                 @method('DELETE')
                 <button class="btn btn-outline-danger" type="submit">Archive</button>
@@ -37,7 +37,7 @@
                         <tbody>
                             @forelse($department->doctors as $doctor)
                                 <tr>
-                                    <td><a href="{{ route('doctors.show', $doctor) }}">{{ $doctor->display_name }}</a></td>
+                                    <td><a href="{{ workspace_route('doctors.show', $doctor) }}">{{ $doctor->display_name }}</a></td>
                                     <td>{{ $doctor->specialization }}</td>
                                     <td>{{ $doctor->room ?? 'Not set' }}</td>
                                     <td><x-status-pill :status="$doctor->status" /></td>

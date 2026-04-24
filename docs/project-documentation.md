@@ -6,7 +6,7 @@ Prepared for the Clinic Appointment and Patient Management System project-based 
 
 ## 1. Project Overview
 
-CityCare Clinic Appointment and Patient Management System is a Laravel web application designed to centralize clinic operations. It supports patient registration, doctor scheduling, appointment booking, consultation records, pharmacy dispensing, radiology orders, cashier billing, reporting, and role-based dashboards.
+CityCare Clinic Appointment and Patient Management System is a Laravel web application designed to centralize clinic operations. It supports patient registration, doctor scheduling, appointment booking, consultation records, pharmacy dispensing, radiology orders, cashier billing, reporting, role-based dashboards, secure document uploads, public feature pages, light and dark display modes, and polished feedback alerts.
 
 The system addresses the clinic problems described in the question paper:
 
@@ -86,6 +86,7 @@ Demo accounts ending in `@citycare.test` bypass OTP for classroom testing. Newly
 ## 4. Major Features
 
 - Public homepage with patient login, patient sign up, staff access, services, location, contact, and care shop links.
+- Dedicated public feature pages for role-based access, live doctor slot checks, 24/7 services, and ambulance support, linked directly from the homepage.
 - Patient registration with email verification.
 - Staff and patient login separation.
 - OTP login for normal users.
@@ -104,13 +105,20 @@ Demo accounts ending in `@citycare.test` bypass OTP for classroom testing. Newly
 - Patient medical information including blood work, lab results, vital signs, insurance, family history, prescriptions, and treatment details.
 - Secure document upload for patient IDs, insurance cards, clinical attachments, payment proof, pharmacy documents, radiology reports, and role-specific staff documents.
 - Dashboards with role-specific metrics, graphs, and pie charts.
+- Light and dark display mode across public pages, authentication pages, and staff workspaces.
+- Auto-dismissing success and error flash messages after login, logout, create, update, and delete actions.
+- Administrator portrait branding on the public homepage and administrator workspace profile areas.
 - Reports for appointments, payments, visits, prescriptions, and inventory with role-based visibility and CSV export.
 
 ## 5. System Modules and Screen Descriptions
 
 ### Public Home
 
-The public home screen introduces CityCare Medical Centre and gives public users links to patient login, patient sign up, staff access, services, location, contact, and care shop. It highlights 24/7 services, ambulance support, and professional clinic operations.
+The public home screen introduces CityCare Medical Centre and gives public users links to patient login, patient sign up, staff access, services, location, contact, and care shop. It highlights 24/7 services, ambulance support, professional clinic operations, and direct navigation to dedicated feature pages such as role-based access and doctor slot checks. It also includes an administrator leadership portrait for branding.
+
+### Public Feature Pages
+
+The public feature pages give a clearer explanation of how the system handles role-based access, live doctor slot checks, 24/7 services, and ambulance support. These pages are linked from the homepage and support the professional public-facing design requirement.
 
 ### Services
 
@@ -130,7 +138,7 @@ The authentication module provides patient login, hidden staff login, patient re
 
 ### Administrator Dashboard
 
-The administrator dashboard provides central monitoring for appointments, active patients, doctors on roster, pending payments, departments, monthly revenue, doctor workloads, payment methods, appointment performance, and attendance trends.
+The administrator dashboard provides central monitoring for appointments, active patients, doctors on roster, pending payments, departments, monthly revenue, doctor workloads, payment methods, appointment performance, and attendance trends. The administrator workspace also uses the customized administrator portrait in the top workspace profile and sidebar profile card.
 
 ### Receptionist Workspace
 
@@ -177,6 +185,8 @@ The screenshots below document the main pages and explain each page's purpose in
 Screenshot: `docs/screenshots/homepage.png`
 
 Purpose: introduces CityCare Medical Centre to public visitors and gives quick access to services, patient login, patient sign up, staff access, care shop, contact, and location information. It supports the public-facing requirement of making the clinic system professional and easy to enter.
+
+It now also includes clickable feature links for role-based access, live doctor slot checks, 24/7 services, and ambulance support, plus the administrator leadership portrait in the public showcase section.
 
 ### Services Page
 
@@ -363,7 +373,7 @@ php artisan test
 Current result:
 
 ```text
-27 tests passed, 153 assertions.
+29 tests passed, 185 assertions.
 ```
 
 ## 14. Important URLs
@@ -371,6 +381,10 @@ Current result:
 - Public home: `/`
 - About: `/about`
 - Services: `/services`
+- Role-based access feature page: `/features/role-based-access`
+- Live doctor slot checks feature page: `/features/live-doctor-slot-checks`
+- 24/7 services feature page: `/features/24-7-services`
+- Ambulance support feature page: `/features/ambulance-support`
 - Care shop: `/shop`
 - Cart: `/cart`
 - Checkout: `/checkout`

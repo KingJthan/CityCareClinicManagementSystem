@@ -5,7 +5,7 @@
 @section('content')
     <x-page-header :title="$order->patient->full_name . ' Radiology Order'" :subtitle="$order->study_type">
         <x-slot:actions>
-            <a class="btn btn-dark" href="{{ route('radiology-orders.edit', $order) }}">Update result</a>
+            <a class="btn btn-dark" href="{{ workspace_route('radiology-orders.edit', $order) }}">Update result</a>
         </x-slot:actions>
     </x-page-header>
 

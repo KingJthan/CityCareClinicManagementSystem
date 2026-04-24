@@ -6,7 +6,7 @@
     <x-page-header title="Change Password" subtitle="Keep your CityCare account credentials current." />
 
     <div class="panel panel-pad" style="max-width: 620px;">
-        <form method="POST" action="{{ route('password.update') }}" class="row g-3">
+        <form method="POST" action="{{ workspace_route('password.update') }}" class="row g-3">
             @csrf
             @method('PUT')
             <div class="col-12">

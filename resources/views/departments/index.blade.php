@@ -5,7 +5,7 @@
 @section('content')
     <x-page-header title="Departments" subtitle="Manage clinic units, locations, and doctor assignments.">
         <x-slot:actions>
-            <a class="btn btn-dark" href="{{ route('departments.create') }}">New department</a>
+            <a class="btn btn-dark" href="{{ workspace_route('departments.create') }}">New department</a>
         </x-slot:actions>
     </x-page-header>
 
@@ -52,7 +52,7 @@
                             <td>{{ $department->appointments_count }}</td>
                             <td><x-status-pill :status="$department->status" /></td>
                             <td class="text-end">
-                                <a class="btn btn-sm btn-outline-secondary" href="{{ route('departments.show', $department) }}">View</a>
+                                <a class="btn btn-sm btn-outline-secondary" href="{{ workspace_route('departments.show', $department) }}">View</a>
                             </td>
                         </tr>
                     @empty

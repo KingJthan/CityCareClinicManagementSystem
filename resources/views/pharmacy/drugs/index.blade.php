@@ -5,8 +5,8 @@
 @section('content')
     <x-page-header title="Drugs" subtitle="Pharmacist-only medication inventory and stock tracking.">
         <x-slot:actions>
-            <a class="btn btn-outline-secondary" href="{{ route('drug-categories.index') }}">Categories</a>
-            <a class="btn btn-dark" href="{{ route('drugs.create') }}">New drug</a>
+            <a class="btn btn-outline-secondary" href="{{ workspace_route('drug-categories.index') }}">Categories</a>
+            <a class="btn btn-dark" href="{{ workspace_route('drugs.create') }}">New drug</a>
         </x-slot:actions>
     </x-page-header>
 
@@ -46,8 +46,8 @@
                             <td>{{ $drug->stock_quantity }} {{ $drug->unit }} <span class="small text-muted">(reorder {{ $drug->reorder_level }})</span></td>
                             <td><x-status-pill :status="$drug->status" /></td>
                             <td class="text-end">
-                                <a class="btn btn-sm btn-outline-secondary" href="{{ route('drugs.edit', $drug) }}">Edit</a>
-                                <form class="d-inline" method="POST" action="{{ route('drugs.destroy', $drug) }}" data-confirm="Archive this drug?">
+                                <a class="btn btn-sm btn-outline-secondary" href="{{ workspace_route('drugs.edit', $drug) }}">Edit</a>
+                                <form class="d-inline" method="POST" action="{{ workspace_route('drugs.destroy', $drug) }}" data-confirm="Archive this drug?">
                                     @csrf
                                     @method('DELETE')
                                     <button class="btn btn-sm btn-outline-danger" type="submit">Archive</button>

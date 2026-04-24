@@ -52,7 +52,7 @@ class RadiologyOrderController extends Controller
             'status' => 'requested',
         ]);
 
-        return redirect()->route('appointments.show', $appointment)->with('success', 'Radiology order sent.');
+        return redirect()->to(workspace_route('appointments.show', $appointment))->with('success', 'Radiology order sent.');
     }
 
     public function show(RadiologyOrder $radiologyOrder)
@@ -84,7 +84,7 @@ class RadiologyOrderController extends Controller
 
         $radiologyOrder->update($payload);
 
-        return redirect()->route('radiology-orders.index')->with('success', 'Radiology order updated.');
+        return redirect()->to(workspace_route('radiology-orders.index'))->with('success', 'Radiology order updated.');
     }
 
     private function ensureDoctorCanOrder(Request $request, Appointment $appointment): void

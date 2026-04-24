@@ -40,9 +40,9 @@
                         <td>{{ $document->size ? number_format($document->size / 1024, 1) . ' KB' : 'N/A' }}</td>
                         <td class="text-end">
                             <div class="d-inline-flex gap-2">
-                                <a class="btn btn-sm btn-outline-secondary" href="{{ route('documents.download', $document) }}">Download</a>
+                                <a class="btn btn-sm btn-outline-secondary" href="{{ workspace_route('documents.download', $document) }}">Download</a>
                                 @if(auth()->user()->hasRole('admin') || $document->uploaded_by === auth()->id())
-                                    <form method="POST" action="{{ route('documents.destroy', $document) }}" data-confirm="Remove this uploaded document?">
+                                    <form method="POST" action="{{ workspace_route('documents.destroy', $document) }}" data-confirm="Remove this uploaded document?">
                                         @csrf
                                         @method('DELETE')
                                         <button class="btn btn-sm btn-outline-danger" type="submit">Remove</button>

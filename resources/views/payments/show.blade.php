@@ -6,8 +6,8 @@
     <x-page-header :title="$payment->invoice_number" subtitle="Cashier billing record and payment details.">
         <x-slot:actions>
             @if(auth()->user()->hasRole(['admin', 'cashier']))
-                <a class="btn btn-outline-secondary" href="{{ route('payments.edit', $payment) }}">Edit</a>
-                <form method="POST" action="{{ route('payments.destroy', $payment) }}" data-confirm="Archive this payment record?">
+                <a class="btn btn-outline-secondary" href="{{ workspace_route('payments.edit', $payment) }}">Edit</a>
+                <form method="POST" action="{{ workspace_route('payments.destroy', $payment) }}" data-confirm="Archive this payment record?">
                     @csrf
                     @method('DELETE')
                     <button class="btn btn-outline-danger" type="submit">Archive</button>
@@ -79,7 +79,7 @@
                         Stripe Checkout opens a secure hosted payment page. Enable cards, wallets, and eligible mobile payment methods in the Stripe Dashboard.
                     </p>
                     @if($stripeConfigured)
-                        <form method="POST" action="{{ route('payments.stripe.checkout', $payment) }}">
+                        <form method="POST" action="{{ workspace_route('payments.stripe.checkout', $payment) }}">
                             @csrf
                             <button class="btn btn-dark" type="submit">Pay securely with Stripe</button>
                         </form>
@@ -95,7 +95,7 @@
                     <p class="eyebrow mb-1">Mobile money</p>
                     <h2 class="h5">Submit MTN or Airtel reference</h2>
                     <p class="text-muted">Use this after sending mobile money. The cashier will verify the transaction and finalize the receipt.</p>
-                    <form method="POST" action="{{ route('payments.mobile-money', $payment) }}" class="row g-2">
+                    <form method="POST" action="{{ workspace_route('payments.mobile-money', $payment) }}" class="row g-2">
                         @csrf
                         <div class="col-sm-5">
                             <label class="form-label" for="payment_method">Network</label>

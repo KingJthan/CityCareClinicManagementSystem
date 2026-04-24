@@ -6,7 +6,7 @@
     <x-page-header title="Patients" subtitle="Search, register, and review clinic patient records.">
         <x-slot:actions>
             @if(auth()->user()->hasRole(['admin', 'receptionist']))
-                <a class="btn btn-dark" href="{{ route('patients.create') }}">New patient</a>
+                <a class="btn btn-dark" href="{{ workspace_route('patients.create') }}">New patient</a>
             @endif
         </x-slot:actions>
     </x-page-header>
@@ -55,7 +55,7 @@
                             <td>{{ $patient->gender ?? 'Not set' }}</td>
                             <td>{{ $patient->date_of_birth?->format('M d, Y') ?? 'Not set' }}</td>
                             <td><x-status-pill :status="$patient->status" /></td>
-                            <td class="text-end"><a class="btn btn-sm btn-outline-secondary" href="{{ route('patients.show', $patient) }}">View</a></td>
+                            <td class="text-end"><a class="btn btn-sm btn-outline-secondary" href="{{ workspace_route('patients.show', $patient) }}">View</a></td>
                         </tr>
                     @empty
                         <tr><td colspan="6" class="text-center text-muted py-4">No patients found.</td></tr>

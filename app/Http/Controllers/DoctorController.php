@@ -63,7 +63,7 @@ class DoctorController extends Controller
             Doctor::create($this->doctorPayload($data) + ['user_id' => $user->id]);
         });
 
-        return redirect()->route('doctors.index')->with('success', 'Doctor profile created.');
+        return redirect()->to(workspace_route('doctors.index'))->with('success', 'Doctor profile created.');
     }
 
     public function show(Doctor $doctor)
@@ -111,7 +111,7 @@ class DoctorController extends Controller
             $doctor->update($this->doctorPayload($data));
         });
 
-        return redirect()->route('doctors.show', $doctor)->with('success', 'Doctor profile updated.');
+        return redirect()->to(workspace_route('doctors.show', $doctor))->with('success', 'Doctor profile updated.');
     }
 
     public function destroy(Doctor $doctor)
@@ -119,7 +119,7 @@ class DoctorController extends Controller
         $doctor->delete();
         $doctor->user->update(['status' => 'inactive']);
 
-        return redirect()->route('doctors.index')->with('success', 'Doctor profile archived.');
+        return redirect()->to(workspace_route('doctors.index'))->with('success', 'Doctor profile archived.');
     }
 
     private function validated(Request $request, ?Doctor $doctor = null): array

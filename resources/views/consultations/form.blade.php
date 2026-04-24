@@ -6,7 +6,7 @@
     <x-page-header :title="'Consultation for ' . $appointment->patient->full_name" :subtitle="$appointment->doctor->display_name . ' - ' . $appointment->appointment_date->format('M d, Y')" />
 
     <div class="panel panel-pad">
-        <form method="POST" action="{{ route('consultations.update', $appointment) }}" class="row g-3">
+        <form method="POST" action="{{ workspace_route('consultations.update', $appointment) }}" class="row g-3">
             @csrf
             @method('PUT')
             <div class="col-md-6">
@@ -31,7 +31,7 @@
             </div>
             <div class="col-12 d-flex gap-2">
                 <button class="btn btn-dark" type="submit">Save consultation</button>
-                <a class="btn btn-outline-secondary" href="{{ route('appointments.show', $appointment) }}">Cancel</a>
+                <a class="btn btn-outline-secondary" href="{{ workspace_route('appointments.show', $appointment) }}">Cancel</a>
             </div>
         </form>
     </div>

@@ -14,6 +14,8 @@
     @auth
         @php
             $user = auth()->user();
+            $activeWorkspaces = $activeWorkspaces ?? [];
+            $currentWorkspaceKey = $currentWorkspaceKey ?? null;
             $roleLabels = [
                 'admin' => 'Administrator',
                 'receptionist' => 'Receptionist',
@@ -50,6 +52,23 @@
                     </div>
 
                     <div class="d-flex align-items-center gap-2">
+                        @if(count($activeWorkspaces) > 1)
+                            <div class="dropdown">
+                                <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Workspaces
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    @foreach($activeWorkspaces as $workspace)
+                                        <li>
+                                            <a class="dropdown-item {{ $workspace['key'] === $currentWorkspaceKey ? 'active' : '' }}" href="{{ route('workspace.dashboard', ['workspace' => $workspace['key']]) }}">
+                                                {{ $workspace['role_label'] }} - {{ $workspace['name'] }}
+                                            </a>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+
                         <button class="btn btn-outline-secondary theme-toggle-btn" type="button" data-theme-toggle aria-label="Toggle light and dark mode">
                             <span class="theme-toggle-icon" data-theme-icon>Dark</span>
                         </button>

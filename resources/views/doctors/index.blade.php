@@ -6,7 +6,7 @@
     <x-page-header title="Doctors" subtitle="Doctor profiles, departments, consultation rooms, and schedule settings.">
         <x-slot:actions>
             @if(auth()->user()->hasRole('admin'))
-                <a class="btn btn-dark" href="{{ route('doctors.create') }}">New doctor</a>
+                <a class="btn btn-dark" href="{{ workspace_route('doctors.create') }}">New doctor</a>
             @endif
         </x-slot:actions>
     </x-page-header>
@@ -61,7 +61,7 @@
                             <td>{{ substr($doctor->shift_starts_at, 0, 5) }} - {{ substr($doctor->shift_ends_at, 0, 5) }}</td>
                             <td>{{ number_format($doctor->consultation_fee) }}</td>
                             <td><x-status-pill :status="$doctor->status" /></td>
-                            <td class="text-end"><a class="btn btn-sm btn-outline-secondary" href="{{ route('doctors.show', $doctor) }}">View</a></td>
+                            <td class="text-end"><a class="btn btn-sm btn-outline-secondary" href="{{ workspace_route('doctors.show', $doctor) }}">View</a></td>
                         </tr>
                     @empty
                         <tr><td colspan="7" class="text-center text-muted py-4">No doctors found.</td></tr>

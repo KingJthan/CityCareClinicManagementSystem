@@ -6,14 +6,14 @@
     <x-page-header :title="$appointment->patient->full_name . ' Appointment'" :subtitle="$appointment->appointment_date->format('M d, Y') . ' at ' . substr($appointment->start_time, 0, 5)">
         <x-slot:actions>
             @if(auth()->user()->hasRole(['admin', 'receptionist']))
-                <a class="btn btn-outline-secondary" href="{{ route('appointments.edit', $appointment) }}">Edit</a>
+                <a class="btn btn-outline-secondary" href="{{ workspace_route('appointments.edit', $appointment) }}">Edit</a>
             @endif
             @if(auth()->user()->hasRole(['admin', 'doctor']) && (!$appointment->consultation || auth()->user()->hasRole('admin') || auth()->user()->doctorProfile?->id === $appointment->doctor_id))
-                <a class="btn btn-dark" href="{{ route('consultations.edit', $appointment) }}">Consultation notes</a>
+                <a class="btn btn-dark" href="{{ workspace_route('consultations.edit', $appointment) }}">Consultation notes</a>
             @endif
             @if(auth()->user()->hasRole(['admin', 'doctor']) && (auth()->user()->hasRole('admin') || auth()->user()->doctorProfile?->id === $appointment->doctor_id))
-                <a class="btn btn-outline-secondary" href="{{ route('prescriptions.create', $appointment) }}">Prescribe drug</a>
-                <a class="btn btn-outline-secondary" href="{{ route('radiology-orders.create', $appointment) }}">Radiology order</a>
+                <a class="btn btn-outline-secondary" href="{{ workspace_route('prescriptions.create', $appointment) }}">Prescribe drug</a>
+                <a class="btn btn-outline-secondary" href="{{ workspace_route('radiology-orders.create', $appointment) }}">Radiology order</a>
             @endif
         </x-slot:actions>
     </x-page-header>
@@ -22,7 +22,7 @@
         <div class="col-lg-5">
             <div class="panel panel-pad h-100">
                 <dl class="row mb-0">
-                    <dt class="col-sm-4">Patient</dt><dd class="col-sm-8"><a href="{{ auth()->user()->hasRole('patient') ? route('patients.profile') : route('patients.show', $appointment->patient) }}">{{ $appointment->patient->full_name }}</a></dd>
+                    <dt class="col-sm-4">Patient</dt><dd class="col-sm-8"><a href="{{ auth()->user()->hasRole('patient') ? workspace_route('patients.profile') : workspace_route('patients.show', $appointment->patient) }}">{{ $appointment->patient->full_name }}</a></dd>
                     <dt class="col-sm-4">Doctor</dt><dd class="col-sm-8">{{ $appointment->doctor->display_name }}</dd>
                     <dt class="col-sm-4">Department</dt><dd class="col-sm-8">{{ $appointment->department->name }}</dd>
                     <dt class="col-sm-4">Time</dt><dd class="col-sm-8">{{ substr($appointment->start_time, 0, 5) }} - {{ substr($appointment->end_time, 0, 5) }}</dd>
@@ -43,7 +43,7 @@
                 @endif
                 <hr>
                 @if($appointment->payment)
-                    <p class="mb-1"><strong>Invoice:</strong> <a href="{{ route('payments.show', $appointment->payment) }}">{{ $appointment->payment->invoice_number }}</a></p>
+                    <p class="mb-1"><strong>Invoice:</strong> <a href="{{ workspace_route('payments.show', $appointment->payment) }}">{{ $appointment->payment->invoice_number }}</a></p>
                     <p class="mb-0"><strong>Payment status:</strong> <x-status-pill :status="$appointment->payment->status" /></p>
                 @else
                     <p class="text-muted mb-0">No payment record has been created for this appointment.</p>

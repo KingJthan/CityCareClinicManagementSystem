@@ -6,7 +6,7 @@
     <x-page-header title="Billing" subtitle="Cashier-controlled invoices, payment status, and patient balances.">
         <x-slot:actions>
             @if($canRecordPayments)
-                <a class="btn btn-dark" href="{{ route('payments.create') }}">Record payment</a>
+                <a class="btn btn-dark" href="{{ workspace_route('payments.create') }}">Record payment</a>
             @endif
         </x-slot:actions>
     </x-page-header>
@@ -64,7 +64,7 @@
                             <td><x-status-pill :status="$payment->status" /></td>
                             <td>{{ $payment->cashier?->name ?? 'Not assigned' }}</td>
                             <td class="text-end">
-                                <a class="btn btn-sm btn-outline-secondary" href="{{ route('payments.show', $payment) }}">
+                                <a class="btn btn-sm btn-outline-secondary" href="{{ workspace_route('payments.show', $payment) }}">
                                     {{ auth()->user()->hasRole('patient') && $payment->status === 'pending' ? 'Pay' : 'View' }}
                                 </a>
                             </td>

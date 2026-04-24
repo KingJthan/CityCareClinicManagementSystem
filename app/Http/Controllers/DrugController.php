@@ -40,7 +40,7 @@ class DrugController extends Controller
     {
         Drug::create($this->validated($request));
 
-        return redirect()->route('drugs.index')->with('success', 'Drug added to pharmacy inventory.');
+        return redirect()->to(workspace_route('drugs.index'))->with('success', 'Drug added to pharmacy inventory.');
     }
 
     public function edit(Drug $drug)
@@ -52,14 +52,14 @@ class DrugController extends Controller
     {
         $drug->update($this->validated($request, $drug));
 
-        return redirect()->route('drugs.index')->with('success', 'Drug updated.');
+        return redirect()->to(workspace_route('drugs.index'))->with('success', 'Drug updated.');
     }
 
     public function destroy(Drug $drug)
     {
         $drug->delete();
 
-        return redirect()->route('drugs.index')->with('success', 'Drug archived.');
+        return redirect()->to(workspace_route('drugs.index'))->with('success', 'Drug archived.');
     }
 
     private function formData(Drug $drug): array

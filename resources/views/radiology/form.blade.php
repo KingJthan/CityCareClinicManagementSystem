@@ -6,7 +6,7 @@
     <x-page-header :title="'Radiology for ' . $appointment->patient->full_name" :subtitle="$appointment->doctor->display_name . ' - Imaging request'" />
 
     <div class="panel panel-pad">
-        <form method="POST" action="{{ route('radiology-orders.store', $appointment) }}" class="row g-3">
+        <form method="POST" action="{{ workspace_route('radiology-orders.store', $appointment) }}" class="row g-3">
             @csrf
             <div class="col-md-7">
                 <label class="form-label" for="study_type">Study type</label>
@@ -26,7 +26,7 @@
             </div>
             <div class="col-12 d-flex gap-2">
                 <button class="btn btn-dark" type="submit">Send to radiology</button>
-                <a class="btn btn-outline-secondary" href="{{ route('appointments.show', $appointment) }}">Cancel</a>
+                <a class="btn btn-outline-secondary" href="{{ workspace_route('appointments.show', $appointment) }}">Cancel</a>
             </div>
         </form>
     </div>

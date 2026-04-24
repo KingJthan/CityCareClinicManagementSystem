@@ -7,6 +7,7 @@ use App\Models\Doctor;
 use App\Models\Patient;
 use App\Models\User;
 use App\Rules\PhoneNumber;
+use App\Services\WorkspaceSessionManager;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -45,7 +46,7 @@ class AuthController extends Controller
         ]);
     }
 
-    public function login(Request $request)
+    public function login(Request $request, WorkspaceSessionManager $workspaces)
     {
         $credentials = $request->validate([
             'email' => ['required', 'email'],
@@ -53,28 +54,19 @@ class AuthController extends Controller
             'expected_role' => ['nullable', 'string', Rule::in(array_keys(self::roleLabels()))],
         ]);
 
-        if (!Auth::attempt($request->only('email', 'password'), $request->boolean('remember'))) {
+        $user = User::where('email', $credentials['email'])->first();
+
+        if (!$user || !Hash::check($credentials['password'], $user->password)) {
             return back()
                 ->withErrors(['email' => 'The login details do not match our records.'])
                 ->withInput($request->only('email'));
         }
 
-        $request->session()->regenerate();
-        $user = $request->user();
-
         if (!$user->isActive()) {
-            Auth::logout();
-            $request->session()->invalidate();
-            $request->session()->regenerateToken();
-
             return back()->withErrors(['email' => 'This account has been deactivated.']);
         }
 
         if (!empty($credentials['expected_role']) && !$user->hasRole($credentials['expected_role'])) {
-            Auth::logout();
-            $request->session()->invalidate();
-            $request->session()->regenerateToken();
-
             return back()
                 ->withErrors(['email' => 'Please use the correct portal for your account role.'])
                 ->withInput($request->only('email'));
@@ -92,14 +84,16 @@ class AuthController extends Controller
 
         if ($this->shouldSkipOtpForDemoAccount($user)) {
             $user->update(['last_login_at' => now()]);
+            $request->session()->regenerate();
+            $workspace = $workspaces->activate($request, $user);
 
-            return redirect()->route('dashboard')->with('success', 'Welcome back to CityCare.');
+            return redirect()
+                ->route('workspace.dashboard', ['workspace' => $workspace])
+                ->with('success', 'Welcome back to CityCare.');
         }
 
         $this->issueLoginOtp($user);
-        Auth::logout();
         $request->session()->put('login_otp_user_id', $user->id);
-        $request->session()->put('login_otp_remember', $request->boolean('remember'));
 
         return redirect()
             ->route('otp.form')
@@ -227,7 +221,7 @@ class AuthController extends Controller
         return view('auth.verify-email', ['email' => $user->email]);
     }
 
-    public function verifyEmail(Request $request)
+    public function verifyEmail(Request $request, WorkspaceSessionManager $workspaces)
     {
         $data = $request->validate([
             'code' => ['required', 'digits:6'],
@@ -251,10 +245,12 @@ class AuthController extends Controller
         ]);
 
         $request->session()->forget('verification_user_id');
-        Auth::login($user);
         $request->session()->regenerate();
+        $workspace = $workspaces->activate($request, $user);
 
-        return redirect()->route('dashboard')->with('success', 'Email verified. Welcome to CityCare.');
+        return redirect()
+            ->route('workspace.dashboard', ['workspace' => $workspace])
+            ->with('success', 'Email verified. Welcome to CityCare.');
     }
 
     public function resendEmailVerification(Request $request)
@@ -281,7 +277,7 @@ class AuthController extends Controller
         return view('auth.verify-otp', ['email' => $user->email]);
     }
 
-    public function verifyOtp(Request $request)
+    public function verifyOtp(Request $request, WorkspaceSessionManager $workspaces)
     {
         $data = $request->validate([
             'code' => ['required', 'digits:6'],
@@ -297,7 +293,7 @@ class AuthController extends Controller
             return back()->withErrors(['code' => 'The login code is invalid or expired.']);
         }
 
-        $remember = (bool) $request->session()->pull('login_otp_remember', false);
+        $request->session()->forget('login_otp_remember');
 
         $user->update([
             'login_otp_code' => null,
@@ -306,10 +302,12 @@ class AuthController extends Controller
         ]);
 
         $request->session()->forget('login_otp_user_id');
-        Auth::login($user, $remember);
         $request->session()->regenerate();
+        $workspace = $workspaces->activate($request, $user);
 
-        return redirect()->route('dashboard')->with('success', 'Welcome back to CityCare.');
+        return redirect()
+            ->route('workspace.dashboard', ['workspace' => $workspace])
+            ->with('success', 'Welcome back to CityCare.');
     }
 
     public function resendLoginOtp(Request $request)
@@ -325,14 +323,27 @@ class AuthController extends Controller
         return back()->with('success', 'A fresh login code has been sent.');
     }
 
-    public function logout(Request $request)
+    public function logout(Request $request, WorkspaceSessionManager $workspaces)
     {
+        $workspace = $request->route('workspace');
+        $remainingWorkspaces = is_string($workspace) && $workspace !== ''
+            ? $workspaces->remove($request, $workspace)
+            : [];
+
         Auth::logout();
 
-        $request->session()->invalidate();
+        if ($remainingWorkspaces === []) {
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+
+            return redirect()->route('home')->with('success', 'Logged out successfully.');
+        }
+
         $request->session()->regenerateToken();
 
-        return redirect()->route('home')->with('success', 'Logged out successfully.');
+        return redirect()
+            ->route('workspace.dashboard', ['workspace' => $workspaces->lastWorkspaceKey($request)])
+            ->with('success', 'Logged out successfully.');
     }
 
     public function showChangePassword()

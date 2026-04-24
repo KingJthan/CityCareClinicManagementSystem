@@ -57,7 +57,7 @@ Route::middleware('guest')->group(function () {
     Route::post('/verify-otp/resend', [AuthController::class, 'resendLoginOtp'])->name('otp.resend');
 });
 
-Route::middleware('auth')->group(function () {
+$registerProtectedRoutes = function (): void {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/password', [AuthController::class, 'showChangePassword'])->name('password.edit');
@@ -159,4 +159,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/reports/export', [ReportController::class, 'exportCsv'])
         ->middleware('role:admin,receptionist,doctor,cashier,pharmacist,radiology,rn,pct,housekeeping,nurse,dietary,patient')
         ->name('reports.export');
-});
+};
+
+Route::middleware('workspace.auth')->group($registerProtectedRoutes);
+
+Route::prefix('workspace/{workspace}')
+    ->where(['workspace' => '[A-Za-z0-9\-]+'])
+    ->as('workspace.')
+    ->middleware('workspace.auth')
+    ->group($registerProtectedRoutes);

@@ -5,7 +5,7 @@
 @section('content')
     <x-page-header title="Drug Categories" subtitle="Prevent duplicated pharmacy categories and keep medication groups clean.">
         <x-slot:actions>
-            <a class="btn btn-dark" href="{{ route('drug-categories.create') }}">New category</a>
+            <a class="btn btn-dark" href="{{ workspace_route('drug-categories.create') }}">New category</a>
         </x-slot:actions>
     </x-page-header>
 
@@ -36,8 +36,8 @@
                             <td>{{ $category->drugs_count }}</td>
                             <td><x-status-pill :status="$category->status" /></td>
                             <td class="text-end">
-                                <a class="btn btn-sm btn-outline-secondary" href="{{ route('drug-categories.edit', $category) }}">Edit</a>
-                                <form class="d-inline" method="POST" action="{{ route('drug-categories.destroy', $category) }}" data-confirm="Archive this drug category?">
+                                <a class="btn btn-sm btn-outline-secondary" href="{{ workspace_route('drug-categories.edit', $category) }}">Edit</a>
+                                <form class="d-inline" method="POST" action="{{ workspace_route('drug-categories.destroy', $category) }}" data-confirm="Archive this drug category?">
                                     @csrf
                                     @method('DELETE')
                                     <button class="btn btn-sm btn-outline-danger" type="submit">Archive</button>

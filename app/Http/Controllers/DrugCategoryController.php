@@ -34,7 +34,7 @@ class DrugCategoryController extends Controller
     {
         DrugCategory::create($this->validated($request));
 
-        return redirect()->route('drug-categories.index')->with('success', 'Drug category created.');
+        return redirect()->to(workspace_route('drug-categories.index'))->with('success', 'Drug category created.');
     }
 
     public function edit(DrugCategory $drugCategory)
@@ -46,14 +46,14 @@ class DrugCategoryController extends Controller
     {
         $drugCategory->update($this->validated($request, $drugCategory));
 
-        return redirect()->route('drug-categories.index')->with('success', 'Drug category updated.');
+        return redirect()->to(workspace_route('drug-categories.index'))->with('success', 'Drug category updated.');
     }
 
     public function destroy(DrugCategory $drugCategory)
     {
         $drugCategory->delete();
 
-        return redirect()->route('drug-categories.index')->with('success', 'Drug category archived.');
+        return redirect()->to(workspace_route('drug-categories.index'))->with('success', 'Drug category archived.');
     }
 
     private function validated(Request $request, ?DrugCategory $category = null): array

@@ -41,7 +41,7 @@ class PaymentController extends Controller
 
         $this->billing->createCashierPayment($data, $request->user());
 
-        return redirect()->route('payments.index')->with('success', 'Payment record created.');
+        return redirect()->to(workspace_route('payments.index'))->with('success', 'Payment record created.');
     }
 
     public function show(Request $request, Payment $payment)
@@ -71,7 +71,7 @@ class PaymentController extends Controller
 
         $this->billing->updateCashierPayment($payment, $data, $request->user());
 
-        return redirect()->route('payments.show', $payment)->with('success', 'Payment record updated.');
+        return redirect()->to(workspace_route('payments.show', $payment))->with('success', 'Payment record updated.');
     }
 
     public function destroy(Request $request, Payment $payment)
@@ -79,7 +79,7 @@ class PaymentController extends Controller
         $this->ensureCanRecord($request);
         $payment->delete();
 
-        return redirect()->route('payments.index')->with('success', 'Payment archived.');
+        return redirect()->to(workspace_route('payments.index'))->with('success', 'Payment archived.');
     }
 
     public function stripeCheckout(Request $request, Payment $payment): RedirectResponse
@@ -104,7 +104,7 @@ class PaymentController extends Controller
         $this->ensureCanPatientPay($request, $payment, allowStartedCheckout: true);
 
         if (!$request->filled('session_id')) {
-            return redirect()->route('payments.show', $payment)->with('error', 'Stripe did not return a checkout session.');
+            return redirect()->to(workspace_route('payments.show', $payment))->with('error', 'Stripe did not return a checkout session.');
         }
 
         try {
@@ -121,17 +121,17 @@ class PaymentController extends Controller
         } catch (\Throwable $exception) {
             report($exception);
 
-            return redirect()->route('payments.show', $payment)->with('error', 'Stripe payment confirmation could not be verified.');
+            return redirect()->to(workspace_route('payments.show', $payment))->with('error', 'Stripe payment confirmation could not be verified.');
         }
 
-        return redirect()->route('payments.show', $payment)->with('success', 'Stripe payment received successfully.');
+        return redirect()->to(workspace_route('payments.show', $payment))->with('success', 'Stripe payment received successfully.');
     }
 
     public function stripeCancel(Request $request, Payment $payment): RedirectResponse
     {
         $this->ensureCanView($request, $payment);
 
-        return redirect()->route('payments.show', $payment)->with('error', 'Stripe Checkout was cancelled. You can try again when ready.');
+        return redirect()->to(workspace_route('payments.show', $payment))->with('error', 'Stripe Checkout was cancelled. You can try again when ready.');
     }
 
     public function mobileMoney(Request $request, Payment $payment): RedirectResponse
@@ -146,7 +146,7 @@ class PaymentController extends Controller
         $this->billing->markMobileMoneyInitiated($payment, $data);
 
         return redirect()
-            ->route('payments.show', $payment)
+            ->to(workspace_route('payments.show', $payment))
             ->with('success', 'Mobile money reference submitted. The cashier will verify and complete the receipt.');
     }
 

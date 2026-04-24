@@ -45,7 +45,7 @@
                     @endif
                     <div class="col-12">
                         <button class="btn btn-outline-secondary" type="submit">Apply filters</button>
-                        <a class="btn btn-outline-secondary" href="{{ route('documents.index') }}">Clear</a>
+                        <a class="btn btn-outline-secondary" href="{{ workspace_route('documents.index') }}">Clear</a>
                     </div>
                 </form>
             </div>

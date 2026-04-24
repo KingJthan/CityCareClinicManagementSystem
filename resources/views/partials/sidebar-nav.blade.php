@@ -20,14 +20,14 @@
     $navItems = array_values(array_filter([
         [
             'label' => 'Dashboard',
-            'route' => route('dashboard'),
-            'match' => ['dashboard'],
+            'route' => workspace_route('dashboard'),
+            'match' => ['dashboard', 'workspace.dashboard'],
             'icon' => 'DB',
         ],
         $user->hasRole('patient') ? [
             'label' => 'My Profile',
-            'route' => route('patients.profile'),
-            'match' => ['patients.profile'],
+            'route' => workspace_route('patients.profile'),
+            'match' => ['patients.profile', 'workspace.patients.profile'],
             'icon' => 'PR',
         ] : null,
         $user->hasRole('patient') ? [
@@ -44,68 +44,68 @@
         ] : null,
         $user->hasRole(['admin', 'receptionist', 'doctor', 'rn', 'pct', 'nurse']) ? [
             'label' => 'Patients',
-            'route' => route('patients.index'),
-            'match' => ['patients.*'],
+            'route' => workspace_route('patients.index'),
+            'match' => ['patients.*', 'workspace.patients.*'],
             'icon' => 'PT',
         ] : null,
         $user->hasRole(['admin', 'receptionist', 'doctor', 'patient']) ? [
             'label' => 'Appointments',
-            'route' => route('appointments.index'),
-            'match' => ['appointments.*', 'consultations.*'],
+            'route' => workspace_route('appointments.index'),
+            'match' => ['appointments.*', 'consultations.*', 'workspace.appointments.*', 'workspace.consultations.*'],
             'icon' => 'AP',
         ] : null,
         $user->hasRole(['admin', 'cashier', 'patient']) ? [
             'label' => 'Billing',
-            'route' => route('payments.index'),
-            'match' => ['payments.*'],
+            'route' => workspace_route('payments.index'),
+            'match' => ['payments.*', 'workspace.payments.*'],
             'icon' => 'PY',
         ] : null,
         [
             'label' => 'Documents',
-            'route' => route('documents.index'),
-            'match' => ['documents.*'],
+            'route' => workspace_route('documents.index'),
+            'match' => ['documents.*', 'workspace.documents.*'],
             'icon' => 'DO',
         ],
         $user->hasRole('pharmacist') ? [
             'label' => 'Pharmacy',
-            'route' => route('prescriptions.index'),
-            'match' => ['prescriptions.*'],
+            'route' => workspace_route('prescriptions.index'),
+            'match' => ['prescriptions.*', 'workspace.prescriptions.*'],
             'icon' => 'RX',
         ] : null,
         $user->hasRole('pharmacist') ? [
             'label' => 'Drugs',
-            'route' => route('drugs.index'),
-            'match' => ['drugs.*'],
+            'route' => workspace_route('drugs.index'),
+            'match' => ['drugs.*', 'workspace.drugs.*'],
             'icon' => 'DG',
         ] : null,
         $user->hasRole('pharmacist') ? [
             'label' => 'Drug Categories',
-            'route' => route('drug-categories.index'),
-            'match' => ['drug-categories.*'],
+            'route' => workspace_route('drug-categories.index'),
+            'match' => ['drug-categories.*', 'workspace.drug-categories.*'],
             'icon' => 'DC',
         ] : null,
         $user->hasRole(['admin', 'radiology']) ? [
             'label' => 'Radiology',
-            'route' => route('radiology-orders.index'),
-            'match' => ['radiology-orders.*'],
+            'route' => workspace_route('radiology-orders.index'),
+            'match' => ['radiology-orders.*', 'workspace.radiology-orders.*'],
             'icon' => 'RD',
         ] : null,
         $user->hasRole(['admin', 'receptionist']) ? [
             'label' => 'Doctors',
-            'route' => route('doctors.index'),
-            'match' => ['doctors.*'],
+            'route' => workspace_route('doctors.index'),
+            'match' => ['doctors.*', 'workspace.doctors.*'],
             'icon' => 'DR',
         ] : null,
         $user->hasRole('admin') ? [
             'label' => 'Departments',
-            'route' => route('departments.index'),
-            'match' => ['departments.*'],
+            'route' => workspace_route('departments.index'),
+            'match' => ['departments.*', 'workspace.departments.*'],
             'icon' => 'DP',
         ] : null,
         [
             'label' => 'Reports',
-            'route' => route('reports.index'),
-            'match' => ['reports.*'],
+            'route' => workspace_route('reports.index'),
+            'match' => ['reports.*', 'workspace.reports.*'],
             'icon' => 'RP',
         ],
     ]));
@@ -154,11 +154,11 @@
 
     <div class="sidebar-section-label">Account</div>
     <div class="sidebar-nav">
-        <a class="sidebar-link {{ request()->routeIs('password.*') ? 'active' : '' }}" href="{{ route('password.edit') }}">
+        <a class="sidebar-link {{ request()->routeIs('password.*', 'workspace.password.*') ? 'active' : '' }}" href="{{ workspace_route('password.edit') }}">
             <span class="sidebar-icon">PW</span>
             <span>Password</span>
         </a>
-        <form method="POST" action="{{ route('logout') }}">
+        <form method="POST" action="{{ workspace_route('logout') }}">
             @csrf
             <button class="sidebar-action" type="submit">
                 <span class="sidebar-icon">LO</span>

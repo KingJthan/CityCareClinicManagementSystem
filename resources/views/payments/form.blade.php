@@ -11,7 +11,7 @@
     </div>
 
     <div class="panel panel-pad">
-        <form method="POST" action="{{ $editing ? route('payments.update', $payment) : route('payments.store') }}" class="row g-3">
+        <form method="POST" action="{{ $editing ? workspace_route('payments.update', $payment) : workspace_route('payments.store') }}" class="row g-3">
             @csrf
             @if($editing)
                 @method('PUT')
@@ -72,7 +72,7 @@
             </div>
             <div class="col-12 d-flex gap-2">
                 <button class="btn btn-dark" type="submit">{{ $editing ? 'Save changes' : 'Record payment' }}</button>
-                <a class="btn btn-outline-secondary" href="{{ route('payments.index') }}">Cancel</a>
+                <a class="btn btn-outline-secondary" href="{{ workspace_route('payments.index') }}">Cancel</a>
             </div>
         </form>
     </div>

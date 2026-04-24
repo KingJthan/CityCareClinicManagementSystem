@@ -6,6 +6,7 @@ use App\Models\Patient;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Testing\TestResponse;
 use Tests\TestCase;
 
 class PatientRegistrationTest extends TestCase
@@ -43,12 +44,19 @@ class PatientRegistrationTest extends TestCase
         $this->assertSame('Grace', $patient->first_name);
         $this->assertSame('Patient', $patient->last_name);
 
-        $this->post(route('verification.verify', [], false), [
+        $dashboardResponse = $this->post(route('verification.verify', [], false), [
             'code' => $user->email_verification_code,
-        ])->assertRedirect(route('dashboard', [], false));
+        ]);
 
-        $this->assertAuthenticatedAs($user);
+        $workspace = $this->assertRedirectsToWorkspaceDashboard($dashboardResponse);
+
+        $this->assertGuest();
+        $this->assertSame($workspace, session('citycare.last_workspace'));
         $this->assertNotNull($user->fresh()->email_verified_at);
+
+        $this->get(route('workspace.dashboard', ['workspace' => $workspace], false))
+            ->assertOk()
+            ->assertSee('Patient Dashboard');
     }
 
     public function test_patient_registration_rejects_short_phone_numbers(): void
@@ -85,12 +93,18 @@ class PatientRegistrationTest extends TestCase
         $this->assertGuest();
         $this->assertNotNull($user->fresh()->login_otp_code);
 
-        $this->post(route('otp.verify', [], false), [
+        $dashboardResponse = $this->post(route('otp.verify', [], false), [
             'code' => $user->fresh()->login_otp_code,
-        ])->assertRedirect(route('dashboard', [], false));
+        ]);
 
-        $this->assertAuthenticatedAs($user);
+        $workspace = $this->assertRedirectsToWorkspaceDashboard($dashboardResponse);
+
+        $this->assertGuest();
         $this->assertNull($user->fresh()->login_otp_code);
+
+        $this->get(route('workspace.dashboard', ['workspace' => $workspace], false))
+            ->assertOk()
+            ->assertSee('Cashier Dashboard');
     }
 
     public function test_demo_citycare_accounts_login_without_otp(): void
@@ -103,13 +117,30 @@ class PatientRegistrationTest extends TestCase
             'email_verified_at' => now(),
         ]);
 
-        $this->post(route('login.store', [], false), [
+        $dashboardResponse = $this->post(route('login.store', [], false), [
             'email' => 'admin@citycare.test',
             'password' => 'citycare456',
             'expected_role' => 'admin',
-        ])->assertRedirect(route('dashboard', [], false));
+        ]);
 
-        $this->assertAuthenticatedAs($user);
+        $workspace = $this->assertRedirectsToWorkspaceDashboard($dashboardResponse);
+
+        $this->assertGuest();
         $this->assertNull($user->fresh()->login_otp_code);
+
+        $this->get(route('workspace.dashboard', ['workspace' => $workspace], false))
+            ->assertOk()
+            ->assertSee('Administrator Dashboard');
+    }
+
+    private function assertRedirectsToWorkspaceDashboard(TestResponse $response): string
+    {
+        $response->assertRedirect();
+
+        $path = parse_url($response->headers->get('Location'), PHP_URL_PATH) ?: '';
+
+        $this->assertMatchesRegularExpression('#^/workspace/[A-Za-z0-9\-]+/dashboard$#', $path);
+
+        return explode('/', trim($path, '/'))[1];
     }
 }
